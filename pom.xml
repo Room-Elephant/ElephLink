@@ -16,6 +16,7 @@
         <compiler.plugin.version>3.14.0</compiler.plugin.version>
         <checkstyle.plugin.version>3.6.0</checkstyle.plugin.version>
         <puppycrawl.version>10.23.1</puppycrawl.version>
+        <assembly.plugin.version>3.7.1</assembly.plugin.version>
 
         <slfj.version>2.0.17</slfj.version>
         <logback.version>1.5.18</logback.version>
@@ -76,6 +77,31 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${assembly.plugin.version}</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <appendAssemblyId>true</appendAssemblyId>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.roomelephant.elephlink.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
