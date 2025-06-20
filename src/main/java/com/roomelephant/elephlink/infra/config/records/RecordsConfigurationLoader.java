@@ -1,5 +1,6 @@
 package com.roomelephant.elephlink.infra.config.records;
 
+import static com.roomelephant.elephlink.domain.model.RecordsConfig.RecordProperties.CRON;
 import static com.roomelephant.elephlink.domain.model.RecordsConfig.RecordProperties.RECORDS;
 
 import com.roomelephant.elephlink.domain.model.RecordsConfig;
@@ -18,7 +19,6 @@ public class RecordsConfigurationLoader extends BaseConfigurationLoader<RecordsC
       case List<?> casted -> castToListString(casted);
       case String casted -> List.of(casted);
       case null, default -> throw new IllegalArgumentException("Invalid configuration for records");
-
     };
 
     return RecordsConfig.builder()

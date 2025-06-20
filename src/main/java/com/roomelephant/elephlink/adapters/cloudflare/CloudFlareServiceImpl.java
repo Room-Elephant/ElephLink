@@ -5,13 +5,15 @@ import static com.roomelephant.elephlink.adapters.cloudflare.TokenVerifyResponse
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.roomelephant.elephlink.domain.CloudFlareService;
 import com.roomelephant.elephlink.domain.model.AuthConfig;
 import com.roomelephant.elephlink.domain.model.RequestFailedException;
 import java.util.Map;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class CloudFlareService {
+public class CloudFlareServiceImpl implements CloudFlareService {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
   private static final String TOKEN_VALIDATION_URL = "/user/tokens/verify";
@@ -20,13 +22,11 @@ public class CloudFlareService {
   public static final CFRequest client = new CFRequest();
   private final AuthConfig authConfig;
 
-  public CloudFlareService(AuthConfig authConfig) {
+  public CloudFlareServiceImpl(AuthConfig authConfig) {
     this.authConfig = authConfig;
-    if (!isValidToken()) {
-      throw new IllegalArgumentException("Invalide auth configurations");
-    }
   }
 
+  @Override
   public boolean isValidToken() {
     Map<String, String> headers = Map.of("Authorization", BEARER + authConfig.authKey());
     String response = client.get(TOKEN_VALIDATION_URL, headers);
@@ -50,7 +50,8 @@ public class CloudFlareService {
 
   }
 
-  public DnsRecordsResponse getDnsRecords(String recordName) {
+  @Override
+  public Optional<DnsRecordsResponse> getDnsRecords(String recordName) {
     Map<String, String> headers = getAuthHeaders();
     String requestUrl = String.format(LIST_RECORDS, authConfig.zoneIdentifier(), A, recordName);
     String response = client.get(requestUrl, headers);
@@ -64,10 +65,10 @@ public class CloudFlareService {
     }
 
     if (dnsRecords.getResult() == null || dnsRecords.getResult().isEmpty()) {
-      throw new IllegalArgumentException("Record '" + recordName + "' does not exist. Please create one first.");
+      return Optional.empty();
     }
 
-    return dnsRecords;
+    return Optional.of(dnsRecords);
   }
 
   private Map<String, String> getAuthHeaders() {
