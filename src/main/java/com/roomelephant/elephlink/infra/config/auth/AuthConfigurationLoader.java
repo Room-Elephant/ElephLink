@@ -15,10 +15,10 @@ public class AuthConfigurationLoader extends BaseConfigurationLoader<AuthConfig>
   @Override
   protected AuthConfig convert(Map<String, Object> ymlConfig) {
     return AuthConfig.builder()
-        .authEmail((String) ymlConfig.get(AUTH_EMAIL.getKey()))
-        .authMethod(AuthConfig.AuthMethod.fromString((String) ymlConfig.get(AUTH_METHOD.getKey())))
-        .authKey((String) ymlConfig.get(AUTH_KEY.getKey()))
-        .zoneIdentifier((String) ymlConfig.get(ZONE_IDENTIFIER.getKey()))
+        .authEmail((String) ymlConfig.get(AUTH_EMAIL.key()))
+        .authMethod(AuthConfig.AuthMethod.fromString((String) ymlConfig.get(AUTH_METHOD.key())))
+        .authKey((String) ymlConfig.get(AUTH_KEY.key()))
+        .zoneIdentifier((String) ymlConfig.get(ZONE_IDENTIFIER.key()))
         .build();
   }
 
