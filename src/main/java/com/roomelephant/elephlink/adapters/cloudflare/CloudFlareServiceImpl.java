@@ -23,7 +23,7 @@ public class CloudFlareServiceImpl implements CloudFlareService {
   private static final String LIST_RECORDS = "/zones/%s/dns_records?type=%s&name=%s";
   private static final String UPDATE_RECORDS = "/zones/%s/dns_records/%s";
   public static final String BEARER = "Bearer ";
-  public static final CFRequest client = new CFRequest();
+  public static final CfRequest client = new CfRequest();
   private final AuthConfig authConfig;
 
   public CloudFlareServiceImpl(AuthConfig authConfig) {
