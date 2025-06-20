@@ -13,6 +13,7 @@ import com.roomelephant.elephlink.domain.model.AuthConfig;
 import com.roomelephant.elephlink.domain.model.IpServiceConfig;
 import com.roomelephant.elephlink.domain.model.RecordsConfig;
 import com.roomelephant.elephlink.infra.ArgsParser;
+import com.roomelephant.elephlink.infra.TaskManager;
 import com.roomelephant.elephlink.infra.config.ConfigLoader;
 import com.roomelephant.elephlink.infra.config.auth.AuthConfigurationLoader;
 import com.roomelephant.elephlink.infra.config.ipservice.IpServiceConfigurationLoader;
@@ -36,6 +37,7 @@ public class Main {
 
       ConfigLoader<RecordsConfig> recordsConfigurationLoader = new RecordsConfigurationLoader();
       RecordsConfig recordsConfig = recordsConfigurationLoader.load(parameters.get(RECORDS_CONFIGURATION_FILE.key()));
+      TaskManager taskManager = new TaskManager(recordsConfig);
       log.debug("records configs have been loaded.");
 
       ConfigLoader<IpServiceConfig> ipsConfigurationLoader = new IpServiceConfigurationLoader();
@@ -43,7 +45,7 @@ public class Main {
       IpServiceImpl ipServiceImpl = new IpServiceImpl(ipConfig);
       log.debug("IP list configs have been loaded.");
 
-      elephlink = new Elephlink(recordsConfig, cloudFlareServiceImpl, ipServiceImpl);
+      elephlink = new Elephlink(recordsConfig, cloudFlareServiceImpl, ipServiceImpl, taskManager);
       elephlink.validateConfigurations();
     } catch (Exception e) {
       log.error("Invalid configuration parameters. Reason: {}", e.getMessage());

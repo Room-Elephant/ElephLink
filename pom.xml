@@ -13,11 +13,13 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <compiler.plugin.version>3.14.0</compiler.plugin.version>
         <slfj.version>2.0.17</slfj.version>
         <logback.version>1.5.18</logback.version>
         <lombok.version>1.18.36</lombok.version>
         <snakeyaml.version>2.9</snakeyaml.version>
         <jackson.version>2.19.0</jackson.version>
+        <cronutils.version>9.2.1</cronutils.version>
     </properties>
 
     <dependencies>
@@ -47,6 +49,11 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.cronutils</groupId>
+            <artifactId>cron-utils</artifactId>
+            <version>${cronutils.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -54,7 +61,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.version}</version>
                 <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
