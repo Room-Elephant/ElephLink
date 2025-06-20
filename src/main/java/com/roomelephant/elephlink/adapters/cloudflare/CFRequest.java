@@ -6,7 +6,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -16,19 +15,29 @@ public class CFRequest {
 
   public String get(String url, Map<String, String> headers) {
     HttpRequest.Builder builder = HttpRequest.newBuilder()
-        .GET()
-        .uri(URI.create(BASE_URL + url))
-        .header("Accept", "application/json");
+        .GET();
+    return doRequest(url, headers, builder);
+  }
+
+  public String patch(String url, Map<String, String> headers, String body) {
+    HttpRequest.Builder builder = HttpRequest.newBuilder()
+        .method("PATCH", HttpRequest.BodyPublishers.ofString(body));
+    return doRequest(url, headers, builder);
+  }
+
+  private String doRequest(String url, Map<String, String> headers, HttpRequest.Builder builder) {
     for (Map.Entry<String, String> entry : headers.entrySet()) {
       builder.header(entry.getKey(), entry.getValue());
     }
-    HttpRequest request = builder.build();
+    HttpRequest request = builder
+        .uri(URI.create(BASE_URL + url))
+        .header("Accept", "application/json")
+        .build();
 
     HttpResponse<String> response;
     try {
       response = client.send(request, HttpResponse.BodyHandlers.ofString());
     } catch (Exception e) {
-      log.error("Failed to validate token", e);
       Thread.currentThread().interrupt();
       throw new RequestFailedException("Failed to make request to " + url, e);
     }
