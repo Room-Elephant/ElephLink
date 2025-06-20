@@ -64,7 +64,7 @@ public class CloudFlareService {
     }
 
     if (dnsRecords.getResult() == null || dnsRecords.getResult().isEmpty()) {
-      throw new IllegalArgumentException("Record does not exist. Please create one first.");
+      throw new IllegalArgumentException("Record '" + recordName + "' does not exist. Please create one first.");
     }
 
     return dnsRecords;

@@ -1,18 +1,14 @@
 package com.roomelephant.elephlink.domain.model;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
 
-@Getter
 @Builder
-@ToString
-public final class AuthConfig {
-  private final String authEmail;
-  private final AuthMethod authMethod;
-  private final String authKey;
-  private final String zoneIdentifier;
-
+public record AuthConfig(
+    String authEmail,
+    AuthMethod authMethod,
+    String authKey,
+    String zoneIdentifier
+) {
   public enum AuthMethod {
     GLOBAL("global"), TOKEN("token");
 
@@ -31,18 +27,20 @@ public final class AuthConfig {
     }
   }
 
-  @Getter
   public enum AuthProperties {
     AUTH_EMAIL("authEmail"),
     AUTH_METHOD("authMethod"),
     AUTH_KEY("authKey"),
     ZONE_IDENTIFIER("zoneIdentifier");
 
-
     private final String key;
 
     AuthProperties(String key) {
       this.key = key;
+    }
+
+    public String key() {
+      return key;
     }
   }
 }
