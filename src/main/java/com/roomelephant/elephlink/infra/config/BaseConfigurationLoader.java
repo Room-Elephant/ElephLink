@@ -1,5 +1,6 @@
 package com.roomelephant.elephlink.infra.config;
 
+import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,4 +27,12 @@ public abstract class BaseConfigurationLoader<T> implements ConfigLoader<T> {
   protected abstract T convert(Map<String, Object> ymlConfig);
 
   protected abstract String getFileName();
+
+
+  protected List<String> castToListString(List<?> casted) {
+    return casted.stream()
+        .filter(String.class::isInstance)
+        .map(String.class::cast)
+        .toList();
+  }
 }
