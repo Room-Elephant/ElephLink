@@ -19,7 +19,7 @@ public class IpService {
 
   public IpService(IpServiceConfig config) {
     try {
-      this.requests = config.getIps().stream().map(ipService -> HttpRequest.newBuilder()
+      this.requests = config.services().stream().map(ipService -> HttpRequest.newBuilder()
           .uri(URI.create(ipService))
           .GET()
           .build()).toList();

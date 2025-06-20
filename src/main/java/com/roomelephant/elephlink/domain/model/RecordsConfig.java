@@ -4,15 +4,15 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record IpServiceConfig(
-    List<String> services
+public record RecordsConfig(
+    List<String> records
 ) {
-  public enum IpServicesProperties {
-    IP_SERVICES("ip-services");
+  public enum RecordProperties {
+    RECORDS("records");
 
     private final String key;
 
-    IpServicesProperties(String key) {
+    RecordProperties(String key) {
       this.key = key;
     }
 
