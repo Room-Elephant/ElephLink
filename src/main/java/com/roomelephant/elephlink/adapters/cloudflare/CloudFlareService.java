@@ -59,4 +59,5 @@ public class CloudFlareService {
 
   }
 
+  public void listDNS() {/*
 }
