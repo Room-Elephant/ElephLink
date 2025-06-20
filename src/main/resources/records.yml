@@ -1,2 +1,3 @@
 records:
-  - domain.comcronExpression: "* * * * *" # UNIX Cron Expression
+  - domain.com
+cronExpression: "* * * * *" # UNIX Cron Expression
