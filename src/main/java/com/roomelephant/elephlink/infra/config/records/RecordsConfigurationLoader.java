@@ -23,6 +23,7 @@ public class RecordsConfigurationLoader extends BaseConfigurationLoader<RecordsC
 
     return RecordsConfig.builder()
         .records(list)
+        .cronExpression((String) ymlConfig.get(CRON.key()))
         .build();
 
   }

@@ -5,10 +5,12 @@ import lombok.Builder;
 
 @Builder
 public record RecordsConfig(
-    List<String> records
+    List<String> records,
+    String cronExpression
 ) {
   public enum RecordProperties {
-    RECORDS("records");
+    RECORDS("records"),
+    CRON("cronExpression");
 
     private final String key;
 

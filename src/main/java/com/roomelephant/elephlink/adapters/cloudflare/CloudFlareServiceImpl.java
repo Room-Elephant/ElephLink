@@ -40,7 +40,7 @@ public class CloudFlareServiceImpl implements CloudFlareService {
     }
 
     if (verify.isSuccess() && verify.getResult() != null && ACTIVE.equals(verify.getResult().getStatus())) {
-      log.info("Successfully validated token");
+      log.debug("Successfully validated token");
       return true;
     }
 
