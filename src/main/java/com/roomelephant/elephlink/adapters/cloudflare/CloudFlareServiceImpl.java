@@ -4,9 +4,12 @@ import static com.roomelephant.elephlink.adapters.cloudflare.DnsRecordsResponse.
 import static com.roomelephant.elephlink.adapters.cloudflare.TokenVerifyResponse.Status.ACTIVE;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.roomelephant.elephlink.domain.CloudFlareService;
 import com.roomelephant.elephlink.domain.model.AuthConfig;
+import com.roomelephant.elephlink.domain.model.DnsRecord;
 import com.roomelephant.elephlink.domain.model.RequestFailedException;
 import java.util.Map;
 import java.util.Optional;
@@ -18,6 +21,7 @@ public class CloudFlareServiceImpl implements CloudFlareService {
   private static final ObjectMapper objectMapper = new ObjectMapper();
   private static final String TOKEN_VALIDATION_URL = "/user/tokens/verify";
   private static final String LIST_RECORDS = "/zones/%s/dns_records?type=%s&name=%s";
+  private static final String UPDATE_RECORDS = "/zones/%s/dns_records/%s";
   public static final String BEARER = "Bearer ";
   public static final CFRequest client = new CFRequest();
   private final AuthConfig authConfig;
@@ -47,11 +51,10 @@ public class CloudFlareServiceImpl implements CloudFlareService {
     log.error("Failed to validate token. Status: {}", verify.getResult() != null
         ? verify.getResult().getStatus() : "");
     return false;
-
   }
 
   @Override
-  public Optional<DnsRecordsResponse> getDnsRecords(String recordName) {
+  public Optional<DnsRecord> getDnsRecord(String recordName) {
     Map<String, String> headers = getAuthHeaders();
     String requestUrl = String.format(LIST_RECORDS, authConfig.zoneIdentifier(), A, recordName);
     String response = client.get(requestUrl, headers);
@@ -60,7 +63,6 @@ public class CloudFlareServiceImpl implements CloudFlareService {
     try {
       dnsRecords = objectMapper.readValue(response, DnsRecordsResponse.class);
     } catch (JsonProcessingException e) {
-      log.error("Failed to parse token", e);
       throw new RequestFailedException("Failed to parse response", e);
     }
 
@@ -68,7 +70,39 @@ public class CloudFlareServiceImpl implements CloudFlareService {
       return Optional.empty();
     }
 
-    return Optional.of(dnsRecords);
+    return dnsRecords.getResult().stream().findFirst()
+        .map(cfdr -> new DnsRecord(
+            cfdr.getId(),
+            DnsRecord.Type.valueOf(cfdr.getType().name()),
+            cfdr.getName(),
+            cfdr.getContent(),
+            cfdr.getTtl(),
+            cfdr.isProxied()
+        ));
+  }
+
+  @Override
+  public boolean updateRecord(DnsRecord dnsRecord) {
+    Map<String, String> headers = getAuthHeaders();
+    String requestUrl = String.format(UPDATE_RECORDS, authConfig.zoneIdentifier(), dnsRecord.getId());
+
+    ObjectNode body = objectMapper.createObjectNode()
+        .put("type", dnsRecord.getType().name())
+        .put("name", dnsRecord.getName())
+        .put("content", dnsRecord.getContent())
+        .put("ttl", dnsRecord.getTtl())
+        .put("proxied", dnsRecord.isProxie());
+
+    String response = client.patch(requestUrl, headers, body.toString());
+
+    JsonNode jsonResponse;
+    try {
+      jsonResponse = objectMapper.readTree(response);
+    } catch (JsonProcessingException e) {
+      throw new RequestFailedException("Failed to parse response", e);
+    }
+
+    return jsonResponse.path("success").asBoolean(false);
   }
 
   private Map<String, String> getAuthHeaders() {
