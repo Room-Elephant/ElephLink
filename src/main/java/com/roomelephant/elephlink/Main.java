@@ -5,7 +5,6 @@ import static com.roomelephant.elephlink.infra.config.ConfigurationProperties.IP
 import static com.roomelephant.elephlink.infra.config.ConfigurationProperties.RECORDS_CONFIGURATION_FILE;
 
 import com.roomelephant.elephlink.adapters.cloudflare.CloudFlareServiceImpl;
-import com.roomelephant.elephlink.adapters.cloudflare.DnsRecordsResponse;
 import com.roomelephant.elephlink.adapters.ipservice.IpServiceImpl;
 import com.roomelephant.elephlink.domain.CloudFlareService;
 import com.roomelephant.elephlink.domain.Elephlink;
@@ -19,7 +18,6 @@ import com.roomelephant.elephlink.infra.config.auth.AuthConfigurationLoader;
 import com.roomelephant.elephlink.infra.config.ipservice.IpServiceConfigurationLoader;
 import com.roomelephant.elephlink.infra.config.records.RecordsConfigurationLoader;
 import java.util.Map;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -33,17 +31,14 @@ public class Main {
       ConfigLoader<AuthConfig> authConfigurationLoader = new AuthConfigurationLoader();
       AuthConfig authConfig = authConfigurationLoader.load(parameters.get(AUTH_CONFIGURATION_FILE.key()));
       CloudFlareService cloudFlareServiceImpl = new CloudFlareServiceImpl(authConfig);
-      log.debug("Auth configs have been loaded.");
 
       ConfigLoader<RecordsConfig> recordsConfigurationLoader = new RecordsConfigurationLoader();
       RecordsConfig recordsConfig = recordsConfigurationLoader.load(parameters.get(RECORDS_CONFIGURATION_FILE.key()));
       TaskManager taskManager = new TaskManager(recordsConfig);
-      log.debug("records configs have been loaded.");
 
       ConfigLoader<IpServiceConfig> ipsConfigurationLoader = new IpServiceConfigurationLoader();
       IpServiceConfig ipConfig = ipsConfigurationLoader.load(parameters.get(IP_LIST_CONFIGURATION_FILE.key()));
       IpServiceImpl ipServiceImpl = new IpServiceImpl(ipConfig);
-      log.debug("IP list configs have been loaded.");
 
       elephlink = new Elephlink(recordsConfig, cloudFlareServiceImpl, ipServiceImpl, taskManager);
       elephlink.validateConfigurations();
@@ -54,7 +49,6 @@ public class Main {
     }
 
     elephlink.start();
-
 
 
   }
