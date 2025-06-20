@@ -4,9 +4,11 @@ import static com.roomelephant.elephlink.infra.config.ConfigurationProperties.AU
 import static com.roomelephant.elephlink.infra.config.ConfigurationProperties.IP_LIST_CONFIGURATION_FILE;
 import static com.roomelephant.elephlink.infra.config.ConfigurationProperties.RECORDS_CONFIGURATION_FILE;
 
-import com.roomelephant.elephlink.adapters.cloudflare.CloudFlareService;
+import com.roomelephant.elephlink.adapters.cloudflare.CloudFlareServiceImpl;
 import com.roomelephant.elephlink.adapters.cloudflare.DnsRecordsResponse;
-import com.roomelephant.elephlink.adapters.ipservice.IpService;
+import com.roomelephant.elephlink.adapters.ipservice.IpServiceImpl;
+import com.roomelephant.elephlink.domain.CloudFlareService;
+import com.roomelephant.elephlink.domain.Elephlink;
 import com.roomelephant.elephlink.domain.model.AuthConfig;
 import com.roomelephant.elephlink.domain.model.IpServiceConfig;
 import com.roomelephant.elephlink.domain.model.RecordsConfig;
@@ -25,41 +27,33 @@ public class Main {
     ArgsParser argsParser = new ArgsParser();
     Map<String, String> parameters = argsParser.parse(args);
 
-    AuthConfig authConfig;
-    IpServiceConfig ipConfig;
-    RecordsConfig recordsConfig;
-    IpService ipService;
-    CloudFlareService cloudFlareService;
-
+    Elephlink elephlink;
     try {
       ConfigLoader<AuthConfig> authConfigurationLoader = new AuthConfigurationLoader();
-      authConfig = authConfigurationLoader.load(parameters.get(AUTH_CONFIGURATION_FILE.key()));
-      cloudFlareService = new CloudFlareService(authConfig);
+      AuthConfig authConfig = authConfigurationLoader.load(parameters.get(AUTH_CONFIGURATION_FILE.key()));
+      CloudFlareService cloudFlareServiceImpl = new CloudFlareServiceImpl(authConfig);
+      log.debug("Auth configs have been loaded.");
 
       ConfigLoader<RecordsConfig> recordsConfigurationLoader = new RecordsConfigurationLoader();
-      recordsConfig = recordsConfigurationLoader.load(parameters.get(RECORDS_CONFIGURATION_FILE.key()));
-      for (String dnsRecord : recordsConfig.records()){
-        cloudFlareService.getDnsRecords(dnsRecord);
-      }
-
-      log.debug("auth configs have been loaded");
+      RecordsConfig recordsConfig = recordsConfigurationLoader.load(parameters.get(RECORDS_CONFIGURATION_FILE.key()));
+      log.debug("records configs have been loaded.");
 
       ConfigLoader<IpServiceConfig> ipsConfigurationLoader = new IpServiceConfigurationLoader();
-      ipConfig = ipsConfigurationLoader.load(parameters.get(IP_LIST_CONFIGURATION_FILE.key()));
-      ipService = new IpService(ipConfig);
-      log.debug("IP list configs have been loaded: {}", ipConfig);
+      IpServiceConfig ipConfig = ipsConfigurationLoader.load(parameters.get(IP_LIST_CONFIGURATION_FILE.key()));
+      IpServiceImpl ipServiceImpl = new IpServiceImpl(ipConfig);
+      log.debug("IP list configs have been loaded.");
+
+      elephlink = new Elephlink(recordsConfig, cloudFlareServiceImpl, ipServiceImpl);
+      elephlink.validateConfigurations();
     } catch (Exception e) {
       log.error("Invalid configuration parameters. Reason: {}", e.getMessage());
       System.exit(1);
       return;
     }
 
-    DnsRecordsResponse dnsRecordsResponse = cloudFlareService.getDnsRecords("roomelephant.com");
-    log.info("dns records response: {}", dnsRecordsResponse);
+    elephlink.start();
 
-    Optional<String> currentIp = ipService.fetchCurrentIp();
-    if (currentIp.isEmpty()) {
-      log.error("Failed to fetch current ip");
-    }
+
+
   }
 }
