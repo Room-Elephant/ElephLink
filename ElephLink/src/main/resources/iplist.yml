@@ -1,0 +1,4 @@
+ip-services:
+  - https://api.ipify.org
+  - https://ipv4.icanhazip.com
+  - https://ipinfo.io/ip
