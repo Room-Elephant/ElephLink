@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### private properties ###
+src/main/resources/config.yml
+src/main/resources/records.yml
