@@ -16,7 +16,7 @@
         <compiler.plugin.version>3.14.0</compiler.plugin.version>
         <slfj.version>2.0.17</slfj.version>
         <logback.version>1.5.18</logback.version>
-        <lombok.version>1.18.36</lombok.version>
+        <lombok.version>1.18.38</lombok.version>
         <snakeyaml.version>2.9</snakeyaml.version>
         <jackson.version>2.19.0</jackson.version>
         <cronutils.version>9.2.1</cronutils.version>
