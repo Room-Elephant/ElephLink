@@ -5,33 +5,33 @@
 
 It allows you to reliably access self-hosted services (like a NAS, media server, or smart home hub) via a custom domain, even when your Internet Service Provider assigns you a dynamic IP address.
 
-## Why Elephlink?
-- Cost-Effective: No need to pay your ISP for a static IP address.
-- Reliable: Runs on a schedule to automatically detect IP changes and update your DNS records in seconds.
-- Flexible: Supports multiple domains, configurable IP detection services, and cron-based scheduling.
-- Secure: Works with modern Cloudflare API tokens for granular, secure access.
-- Footprint: Low footprint on your system with less than 10 mb of ram
+## 🔥 Why Elephlink?
+- **Cost-Effective**: No need to pay your ISP for a static IP address.
+- **Effortless**: Runs on a schedule to automatically detect IP changes and update your DNS records in seconds.
+- **Flexible**: Supports multiple domains, configurable IP detection services and cron-based scheduling.
+- **Secure**: Works with modern Cloudflare API tokens for granular, secure access.
+- **Footprint**: Low footprint on your system with less than 10 Mb of RAM.
 
 
-## Features
+## 🚀 Features
 - Seamless integration with the Cloudflare v4 API.
 - Supports multiple DNS records across different domains.
-- Periodic IP checking with cron-style scheduling.
-- Pluggable IP detection using a configurable list of providers.
+- Periodic IP checking with cron-based scheduling.
+- Pluggable IP detection services using a configurable list of providers.
 - All configuration is external, making it perfect for containerized deployments.
 
-## How it Works
-1. **IP Detection**: Regularly checks your public IP using one or more external services.
+## ⚙️ How it Works
+1. **IP Detection**: Regularly checks your public IP using one or more external services (at your choice).
 2. **Cloudflare Validation**: Authenticates with Cloudflare and verifies your DNS records.
 3. **DNS Update**: If your public IP changes, automatically updates the specified Cloudflare DNS records.
-4. **Scheduling**: Runs on a user-defined schedule (e.g., every few minutes) using cron expressions.
+4. **Scheduling**: Runs on a user-defined schedule (e.g. every few minutes) using cron expressions.
 
-## Getting Started
+## 🏃 Getting Started
 
 ### Prerequisites
 - A Cloudflare account.
 - A registered domain name managed by Cloudflare.
-- An A record created in your Cloudflare DNS dashboard that you want to keep updated. The initial IP can be a placeholder like 1.1.1.1.
+- An `A` record created in your Cloudflare DNS dashboard that you want to keep updated. The initial IP can be a placeholder like `1.1.1.1`.
 - A Cloudflare API Token (recommended) or your Global API Key.
 - Java 21 or higher
 - Maven 3.6+ (only required if building from source).
@@ -53,15 +53,15 @@ mvn clean install
 ```
 2. **Configuration**
 
-Create three YAML configuration files. You can start by copying the examples from src/main/resources/.
+Create three YAML configuration files. You can start by copying the examples from `src/main/resources/`.
 
 [config.yml](https://github.com/Room-Elephant/ElephLink/blob/main/src/main/resources/config.yml): This file handles your Cloudflare API credentials.
 ```yml
 # The email associated with your Cloudflare account.
 authEmail: user@example.com
-# "token" for a Scoped API Token (recommended) or "global" for a Global API Key.
+# Choose between "token" for a Scoped API Token (recommended) or "global" for a Global API Key.
 authMethod: token
-# Your Cloudflare API token or key.
+# Your Cloudflare API token or Global API key.
 authKey: YOUR_CLOUDFLARE_API_TOKEN
 # The Zone Identifier for your domain, found on the "Overview" page in the Cloudflare dashboard.
 zoneIdentifier: YOUR_ZONE_ID
@@ -108,13 +108,13 @@ If your configuration files are in the same directory as the JAR, you can omit t
 ```bash
 java -jar elephlink-1.0.0-jar-with-dependencies.jar
 ```
-The application will validate your configuration, verify the DNS records in Cloudflare, and start the update schedule.
+The application will validate your configuration, verify the DNS records in Cloudflare and start the update schedule.
 
-## Contributing
+## 🤝 Contributing
 Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
 
-## Acknowledgments
-This project was inspired by the functionality of the K0p1-Git/cloudflare-ddns-updater bash script.
+## 🙇‍♂️ Acknowledgments
+This project was inspired by the functionality of the [K0p1-Git/cloudflare-ddns-updater](https://github.com/K0p1-Git/cloudflare-ddns-updater) bash script.
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
