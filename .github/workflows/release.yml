@@ -1,0 +1,73 @@
+name: Maven Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseVersion:
+        description: 'Release version'
+        required: true
+      developmentVersion:
+        description: 'Next development version'
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required to get tags
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Configure Git
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
+      - name: Set up Maven settings.xml
+        uses: s4u/maven-settings-action@v3.1.0
+        with:
+          servers: '[{"id": "github", "username": "${{ github.actor }}", "password": "${{ secrets.RELEASE_TOKEN }}"}]'
+
+      - name: Prepare Release
+        run: |
+          mvn -B release:prepare \
+            -DreleaseVersion=${{ github.event.inputs.releaseVersion }} \
+            -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }} \
+            -DtagNameFormat=v@{project.version}
+
+      - name: Perform Release
+        run: mvn -B release:perform
+
+      - name: Generate changelog from commits
+        id: changelog
+        run: |
+          git fetch --tags
+          LAST_TAG=$(git describe --tags --abbrev=0)
+          echo "Last tag: $LAST_TAG"
+          CHANGELOG=$(git log $LAST_TAG..HEAD --pretty=format:'- %s (%an)')
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.event.inputs.releaseVersion }}
+          name: Release v${{ github.event.inputs.releaseVersion }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          files: |
+            target/*.jar
+            target/*.pom
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
