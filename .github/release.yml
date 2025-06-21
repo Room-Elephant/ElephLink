@@ -16,6 +16,9 @@ changelog:
     - title: 📝 Documentation
       labels:
         - documentation
+    - title: 🧹 Refactoring
+      labels:
+        - refactor
     - title: Other Changes
       labels:
         - "*"
