@@ -41,7 +41,9 @@ public class TaskManager {
     Optional<ZonedDateTime> nextExecution = executionTime.nextExecution(now);
 
     if (nextExecution.isPresent()) {
-      long delay = Duration.between(now, nextExecution.get()).toMillis();
+      Duration between = Duration.between(now, nextExecution.get());
+      log.info("Next execution time: {}", nextExecution.get());
+      long delay = between.toMillis();
 
       executor.schedule(() -> {
         try {
@@ -56,6 +58,7 @@ public class TaskManager {
   }
 
   public void shutdown() {
+    log.debug("Shutting down");
     executor.shutdown();
     try {
       if (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
