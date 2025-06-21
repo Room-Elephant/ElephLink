@@ -12,7 +12,6 @@ It allows you to reliably access self-hosted services (like a NAS, media server,
 - **Secure**: Works with modern Cloudflare API tokens for granular, secure access.
 - **Footprint**: Low footprint on your system with less than 10 Mb of RAM.
 
-
 ## 🚀 Features
 - Seamless integration with the Cloudflare v4 API.
 - Supports multiple DNS records across different domains.
@@ -33,25 +32,34 @@ It allows you to reliably access self-hosted services (like a NAS, media server,
 - A registered domain name managed by Cloudflare.
 - An `A` record created in your Cloudflare DNS dashboard that you want to keep updated. The initial IP can be a placeholder like `1.1.1.1`.
 - A Cloudflare API Token (recommended) or your Global API Key.
-- Java 21 or higher
-- Maven 3.6+ (only required if building from source).
 
 | Type | Name       | Content | Proxy status | TTL  | 
 |------|------------|---------|--------------|------|
 | A    | domain.com | 1.1.1.1 | Proxied      | Auto |
 
+### Running on Docker
 
-### Running ElephLink
-
-1. **Build from Source**
-
-Clone the repository and build the project using Maven. This will create a single executable JAR file.
+1. **Running in Docker**
 ```bash
-git clone https://github.com/Room-Elephant/ElephLink.git
-cd ElephLink
-mvn clean install
+docker run \
+  --name elephlink \
+  --restart unless-stopped \
+  -v /path/to/config/dir/:/config \
+  roomelephant/elephlink:latest
+```
+or
+```yml
+services:
+  elephlink:
+    image: roomelephant/elephlink:latest
+    volumes:
+      - /path/to/config/dir/config.yml:/config/config.yml
+      - /path/to/config/dir/iplist.yml:/config/iplist.yml
+      - /path/to/config/dir/records.yml:/config/records.yml
 ```
 2. **Configuration**
+
+The application will validate your configuration, verify the DNS records in Cloudflare and start the update schedule.
 
 Create three YAML configuration files. You can start by copying the examples from `src/main/resources/`.
 
@@ -97,7 +105,25 @@ ip-services:
   - https://ipinfo.io/ip
 ```
 
-3. **Run the Application**
+### Running locally
+
+#### Prerequisites
+
+- Java 21 or higher
+- Maven 3.6+
+
+#### Running Java
+
+1. **Build from Source**
+
+Clone the repository and build the project using Maven. This will create a single executable JAR file.
+```bash
+git clone https://github.com/Room-Elephant/ElephLink.git
+cd ElephLink
+mvn clean install
+```
+
+2. **Run the Application**
 ```bash
 java -jar elephlink-1.0.0-jar-with-dependencies.jar \
    --authConfigurationFile=path/to/auth.yaml \
@@ -108,14 +134,15 @@ If your configuration files are in the same directory as the JAR, you can omit t
 ```bash
 java -jar elephlink-1.0.0-jar-with-dependencies.jar
 ```
-The application will validate your configuration, verify the DNS records in Cloudflare and start the update schedule.
 
-### Running with Docker
+#### Running with Docker
 For a more isolated and portable setup, you can run ElephLink in a Docker container.
 
-1. **Compile the project**
+1. **Build from Source**
 ```bash
-java mvn clean install
+git clone https://github.com/Room-Elephant/ElephLink.git
+cd ElephLink
+mvn clean install
 ```
 
 2. **Build the Docker image**
