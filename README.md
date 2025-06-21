@@ -110,6 +110,28 @@ java -jar elephlink-1.0.0-jar-with-dependencies.jar
 ```
 The application will validate your configuration, verify the DNS records in Cloudflare and start the update schedule.
 
+### Running with Docker
+For a more isolated and portable setup, you can run ElephLink in a Docker container.
+
+1. **Compile the project**
+```bash
+java mvn clean install
+```
+
+2. **Build the Docker image**
+```bash
+docker build -t elephlink .
+```
+
+3. **Run the container**
+Place your configuration files (auth.yaml, records.yaml, ipservices.yaml) in a single directory (e.g., ./config). Then, run the container with that directory mounted as a volume.
+```bash
+docker run --name elephlink \
+  -v $(pwd)/src/main/resources:/config \
+  --restart always \
+  elephlink
+```
+
 ## 🤝 Contributing
 Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
 
