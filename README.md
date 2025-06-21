@@ -43,7 +43,7 @@ It allows you to reliably access self-hosted services (like a NAS, media server,
 
 ### Running ElephLink
 
-1. Build from Source
+1. **Build from Source**
 
 Clone the repository and build the project using Maven. This will create a single executable JAR file.
 ```bash
@@ -51,7 +51,7 @@ git clone https://github.com/Room-Elephant/ElephLink.git
 cd ElephLink
 mvn clean install
 ```
-2. Configuration
+2. **Configuration**
 
 Create three YAML configuration files. You can start by copying the examples from src/main/resources/.
 
@@ -97,16 +97,16 @@ ip-services:
   - https://ipinfo.io/ip
 ```
 
-3. Run the Application
+3. **Run the Application**
 ```bash
-java -jar target/elephlink-1.0-SNAPSHOT-jar-with-dependencies.jar \
+java -jar elephlink-1.0.0-jar-with-dependencies.jar \
    --authConfigurationFile=path/to/auth.yaml \
    --recordsConfigurationFile=path/to/records.yaml \
    --ipListConfigurationFile=path/to/ipservices.yaml
 ```
 If your configuration files are in the same directory as the JAR, you can omit the arguments:
 ```bash
-java -jar target/elephlink-1.0-SNAPSHOT-jar-with-dependencies.jar
+java -jar elephlink-1.0.0-jar-with-dependencies.jar
 ```
 The application will validate your configuration, verify the DNS records in Cloudflare, and start the update schedule.
 
