@@ -81,6 +81,8 @@ jobs:
           context: .
           push: true
           tags: roomelephant/elephlink:${{ github.event.inputs.releaseVersion }},roomelephant/elephlink:latest
+          outputs: |
+            type=image,name=roomelephant/elephlink,annotation-tag=${{ github.event.inputs.releaseVersion }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
@@ -88,6 +90,16 @@ jobs:
           tag_name: v${{ github.event.inputs.releaseVersion }}
           name: Release v${{ github.event.inputs.releaseVersion }}
           generate_release_notes: true
+          body: |
+            ## Docker Image
+  
+            The Docker image for this release is available at:
+            `docker pull roomelephant/elephlink:${{ github.event.inputs.releaseVersion }}`
+  
+            You can also use the `latest` tag:
+            `docker pull roomelephant/elephlink:latest`
+  
+            # Additional Notes
           files: |
             target/*.jar
             target/*.pom
