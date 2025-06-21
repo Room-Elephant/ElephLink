@@ -18,8 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-          token: ${{ secrets.RELEASE_TOKEN }}
+          fetch-depth: 0  # Required to get tags
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -48,13 +47,15 @@ jobs:
       - name: Perform Release
         run: mvn -B release:perform
 
-      - name: Get Changelog Entry
+      - name: Generate changelog from commits
         id: changelog
         run: |
-          VERSION="v${{ github.event.inputs.releaseVersion }}"
-          CHANGELOG_ENTRY=$(sed -n "/## $VERSION/,/## /p" CHANGELOG.md | sed '$d')
+          git fetch --tags
+          LAST_TAG=$(git describe --tags --abbrev=0)
+          echo "Last tag: $LAST_TAG"
+          CHANGELOG=$(git log $LAST_TAG..HEAD --pretty=format:'- %s (%an)')
           echo "changelog<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGELOG_ENTRY" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
