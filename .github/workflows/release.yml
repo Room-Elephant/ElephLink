@@ -1,5 +1,4 @@
-name: Maven and Docker Release
-
+name: Release
 on:
   workflow_dispatch:
     inputs:
@@ -15,10 +14,8 @@ on:
         default: 'false'
 
 jobs:
-  maven-release:
+  release:
     runs-on: ubuntu-latest
-    outputs:
-      tag: ${{ steps.get_tag.outputs.tag }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -31,19 +28,6 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-
-      - name: Configure Git
-        run: |
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
-
-      - name: Get previous tag
-        id: previous_tag
-        run: |
-          PREV_TAG=$(git tag --sort=-creatordate | grep -v "^v${{ github.event.inputs.releaseVersion }}$" | head -n 1)
-          echo "Previous tag: $PREV_TAG"
-          echo "tag=$PREV_TAG" >> $GITHUB_OUTPUT
-
       - name: Set up Maven settings.xml
         uses: s4u/maven-settings-action@v3.1.0
         with:
@@ -55,52 +39,26 @@ jobs:
             -DreleaseVersion=${{ github.event.inputs.releaseVersion }} \
             -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }} \
             -DtagNameFormat=v@{project.version}
-
       - name: Perform Release
         run: mvn -B release:perform
-
-      - name: Push changes
-        run: git push --follow-tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload JAR for Docker
-        uses: actions/upload-artifact@v4
-        with:
-          name: docker-build-jar
-          path: target/elephlink-jar-with-dependencies.jar
-
-  docker-publish:
-    needs: maven-release
-    runs-on: ubuntu-latest
-    outputs:
-      docker_message: ${{ steps.set_message.outputs.message }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download JAR from Maven job
-        uses: actions/download-artifact@v4
-        with:
-          name: docker-build-jar
-          path: target
 
       - name: Login to dockerhub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and Push
+      - name: Build and push to dockerhub
         uses: docker/build-push-action@v5
         with:
           push: true
           tags: roomelephant/elephlink:${{ github.event.inputs.releaseVersion }},roomelephant/elephlink:latest
 
-  github-release:
-    needs: [maven-release, docker-publish]
-    runs-on: ubuntu-latest
-    steps:
+      - name: Get previous tag
+        id: previous_tag
+        run: |
+          PREV_TAG=$(git tag --sort=-creatordate | grep -v "^v${{ github.event.inputs.releaseVersion }}$" | head -n 1)
+          echo "Previous tag: $PREV_TAG"
+          echo "tag=$PREV_TAG" >> $GITHUB_OUTPUT
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
@@ -114,3 +72,14 @@ jobs:
           prerelease: ${{ inputs.debug_mode == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+      - name: Push changes
+        run: git push --follow-tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
