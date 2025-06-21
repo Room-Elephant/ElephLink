@@ -4,7 +4,7 @@
 
     <groupId>com.roomelephant</groupId>
     <artifactId>elephlink</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.9-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -160,7 +160,7 @@
         <url>https://github.com/Room-Elephant/ElephLink</url>
         <connection>scm:git:https://github.com/Room-Elephant/ElephLink.git</connection>
         <developerConnection>scm:git:https://github.com/JPedroBorges/ElephLink.git</developerConnection>
-        <tag>v1.0.8</tag>
+        <tag>HEAD</tag>
     </scm>
 
 </project>
