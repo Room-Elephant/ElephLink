@@ -39,6 +39,11 @@ jobs:
         with:
           servers: '[{"id": "github", "username": "${{ github.actor }}", "password": "${{ secrets.RELEASE_TOKEN }}"}]'
 
+      - name: Configure Git
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
       - name: Prepare Release
         run: |
           mvn -B release:prepare \
@@ -79,10 +84,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Configure Git
-        run: |
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
       - name: Push changes
         run: git push --follow-tags
         env:
