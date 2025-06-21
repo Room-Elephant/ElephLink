@@ -47,7 +47,7 @@ public class IpServiceImpl implements IpService {
 
       String ip = response.body().trim();
       if (ipv4Pattern.matcher(ip).matches()) {
-        log.info("Current public IP {}", ip);
+        log.debug("Current public IP {}", ip);
         return Optional.of(ip);
       }
     }

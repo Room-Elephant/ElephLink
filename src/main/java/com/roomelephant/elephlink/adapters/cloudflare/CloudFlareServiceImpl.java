@@ -49,7 +49,7 @@ public class CloudFlareServiceImpl implements CloudFlareService {
     }
 
     log.error("Failed to validate token. Status: {}", verify.getResult() != null
-        ? verify.getResult().getStatus() : "");
+        ? verify.getResult().getStatus() : "Invalid token configuration");
     return false;
   }
 

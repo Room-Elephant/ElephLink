@@ -74,9 +74,10 @@ public class Elephlink {
   private void task() {
     Optional<String> curr = ipService.fetchCurrentIp();
     if (curr.isEmpty()) {
-      log.warn("No current ip available");
+      log.warn("Unable to fetch external IP");
       return;
     }
+    log.info("Current external IP address is {}", curr.get());
 
     String currentIp = curr.get();
     if (currentIp.equals(cache.getCurrentIp())) {
@@ -86,9 +87,9 @@ public class Elephlink {
     cache.setCurrentIp(currentIp);
 
     for (DnsRecord dnsRecord : cache.getDnsRecords()) {
-      String cfIp = dnsRecord.getContent();
-      if (cfIp.equals(currentIp)) {
-        log.warn("Cloudflare already configured with new IP");
+      String previousIp = dnsRecord.getContent();
+      if (previousIp.equals(currentIp)) {
+        log.warn("Cloudflare record '{}' already configured with new IP {}", dnsRecord.getName(), currentIp);
         continue;
       }
 
@@ -96,17 +97,18 @@ public class Elephlink {
       try {
         boolean result = cloudFlareService.updateRecord(dnsRecord);
         if (result) {
-          log.info("Successfully updated cloudflare record name {} to use ip {}", dnsRecord.getName(), currentIp);
+          log.info("Successfully updated cloudflare record '{}' to use ip {} instead of {}", dnsRecord.getName(),
+              currentIp, previousIp);
         } else {
-          dnsRecord.setContent(cfIp);
-          log.warn("Failed to update cloudflare record name {} to use ip {}. using {} instead", dnsRecord.getName(),
-              currentIp, cfIp);
+          dnsRecord.setContent(previousIp);
+          log.warn("Failed to update cloudflare record '{}' to use ip {}. Using {} instead", dnsRecord.getName(),
+              currentIp, previousIp);
         }
       } catch (Exception e) {
-        dnsRecord.setContent(cfIp);
-        log.warn("Something went wrong updating cloudflare record name {} to use ip {}. using {} instead",
+        dnsRecord.setContent(previousIp);
+        log.warn("Something went wrong updating cloudflare record '{}' to use ip {}. Using {} instead",
             dnsRecord.getName(),
-            currentIp, cfIp);
+            currentIp, previousIp);
       }
     }
   }
