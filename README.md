@@ -1,7 +1,7 @@
 # ElephLink
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Room-Elephant/ElephLink/blob/main/LICENSE) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Room-Elephant_ElephLink&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Room-Elephant_ElephLink) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Room-Elephant_ElephLink&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Room-Elephant_ElephLink) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Room-Elephant_ElephLink&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=Room-Elephant_ElephLink) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Room-Elephant_ElephLink&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Room-Elephant_ElephLink)
 
-ElephLink is a powerful, lightweight Dynamic DNS (DDNS) client that uses the Cloudflare API to keep your domain name pointing to your home network.
+**ElephLink** is a powerful, lightweight Dynamic DNS (DDNS) client that uses the Cloudflare API to keep your domain name pointing to your home network.
 
 It allows you to reliably access self-hosted services (like a NAS, media server, or smart home hub) via a custom domain, even when your Internet Service Provider assigns you a dynamic IP address.
 

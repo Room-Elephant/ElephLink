@@ -17,6 +17,7 @@
         <checkstyle.plugin.version>3.6.0</checkstyle.plugin.version>
         <puppycrawl.version>10.23.1</puppycrawl.version>
         <assembly.plugin.version>3.7.1</assembly.plugin.version>
+        <release.plugin.version>3.0.1</release.plugin.version>
 
         <slfj.version>2.0.17</slfj.version>
         <logback.version>1.5.18</logback.version>
@@ -105,6 +106,20 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${release.plugin.version}</version>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <checkModificationExcludes>
+                        <checkModificationExclude>pom.xml</checkModificationExclude>
+                    </checkModificationExcludes>
+                    <pushChanges>false</pushChanges>
+                    <localCheckout>true</localCheckout>
+                    <goals>deploy</goals>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>${checkstyle.plugin.version}</version>
                 <dependencies>
@@ -133,5 +148,20 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/Room-Elephant/ElephLink</url>
+        </repository>
+    </distributionManagement>
+
+    <scm>
+        <url>https://github.com/Room-Elephant/ElephLink</url>
+        <connection>scm:git:https://github.com/Room-Elephant/ElephLink.git</connection>
+        <developerConnection>scm:git:https://github.com/JPedroBorges/ElephLink.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
 </project>
