@@ -17,6 +17,12 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Show input parameters
+        run: |
+          echo "Release version: ${{ github.event.inputs.releaseVersion }}"
+          echo "Development version: ${{ github.event.inputs.developmentVersion }}"
+          echo "Is prerelease: ${{ github.event.inputs.prerelease == 'true' }}"
+
       - name: Checkout code
         uses: actions/checkout@v4
         with:
@@ -69,7 +75,7 @@ jobs:
             target/*.jar
             target/*.pom
           draft: false
-          prerelease: ${{ inputs.debug_mode == 'true' }}
+          prerelease: ${{ github.event.inputs.prerelease == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
