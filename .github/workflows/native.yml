@@ -44,11 +44,19 @@ jobs:
       - name: compile
         run: mvn -B -Pnative package
 
-      - name: Upload binary
+      - name: Upload non-Windows binary
+        if: matrix.os != 'windows-latest'
         uses: actions/upload-artifact@v4
         with:
           name: elephlink-${{ matrix.os }}
           path: target/elephlink
+
+      - name: Upload Windows binary
+        if: matrix.os == 'windows-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: elephlink-${{ matrix.os }}
+          path: target/elephlink.exe
 
   release:
     needs: build
