@@ -48,7 +48,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: elephlink-${{ matrix.os }}
-          path: ./build/native/nativeCompile/elephlink
+          path: target/elephlink
 
   release:
     needs: build
