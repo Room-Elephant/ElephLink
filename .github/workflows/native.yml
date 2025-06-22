@@ -45,14 +45,10 @@ jobs:
         run: mvn -B -Pnative package
 
       - name: Upload binary
-        run: |
-          ls ./build/native/nativeCompile/
-
-      - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
           name: elephlink-${{ matrix.os }}
-          path: ./build/native/nativeCompile/elephlink-app
+          path: ./build/native/nativeCompile/elephlink
 
   release:
     needs: build
