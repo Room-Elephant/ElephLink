@@ -82,9 +82,9 @@ jobs:
 
       - name: Rename binaries for release
         run: |
-          mv build/linux/elephlink build/elephlink-linux-${{ github.event.inputs.releaseVersion }}
-          mv build/macos/elephlink build/elephlink-macos-${{ github.event.inputs.releaseVersion }}
-          mv build/windows/elephlink.exe build/elephlink-windows-${{ github.event.inputs.releaseVersion }}.exe
+          mv build/linux/elephlink output/elephlink-linux-${{ github.event.inputs.releaseVersion }}
+          mv build/macos/elephlink output/elephlink-macos-${{ github.event.inputs.releaseVersion }}
+          mv build/windows/elephlink.exe output/elephlink-windows-${{ github.event.inputs.releaseVersion }}.exe
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
@@ -93,7 +93,7 @@ jobs:
           name: Release v${{ github.event.inputs.releaseVersion }}
           generate_release_notes: true
           files: |
-            build/elephlink-*
+            output/elephlink-*
           draft: false
           prerelease: ${{ github.event.inputs.prerelease == 'true' }}
         env:
