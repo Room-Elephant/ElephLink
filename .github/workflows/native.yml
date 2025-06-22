@@ -74,17 +74,17 @@ jobs:
           name: elephlink-macos-latest
           path: build/macos
 
-      - name: Rename binaries for release
-        run: |
-          mv build/linux/elephlink build/elephlink-linux-${{ github.event.inputs.releaseVersion }}
-          mv build/macos/elephlink build/elephlink-macos-${{ github.event.inputs.releaseVersion }}
-          mv build/windows/elephlink.exe build/elephlink-windows-${{ github.event.inputs.releaseVersion }}.exe
-
       - name: Download Windows binary
         uses: actions/download-artifact@v4
         with:
           name: elephlink-windows-latest
           path: build/windows
+
+      - name: Rename binaries for release
+        run: |
+          mv build/linux/elephlink build/elephlink-linux-${{ github.event.inputs.releaseVersion }}
+          mv build/macos/elephlink build/elephlink-macos-${{ github.event.inputs.releaseVersion }}
+          mv build/windows/elephlink.exe build/elephlink-windows-${{ github.event.inputs.releaseVersion }}.exe
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
