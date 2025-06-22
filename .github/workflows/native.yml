@@ -42,7 +42,38 @@ jobs:
           native-image-job-reports: 'true'
 
       - name: compile
-        run: mvn -B native:compile -Pnative
+        run: mvn -B -Pnative package
+
+      - name: Upload binary
+        run: |
+          ls ./build/native/nativeCompile/
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: elephlink-${{ matrix.os }}
+          path: ./build/native/nativeCompile/elephlink-app
+
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download macOS binary
+        uses: actions/download-artifact@v4
+        with:
+          name: elephlink-macos-latest
+          path: build/macos
+
+      - name: Download Windows binary
+        uses: actions/download-artifact@v4
+        with:
+          name: elephlink-windows-latest
+          path: build/windows
+
+      - name: Download Linux binary
+        uses: actions/download-artifact@v4
+        with:
+          name: elephlink-ubuntu-latest
+          path: build/linux
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
@@ -50,18 +81,8 @@ jobs:
           tag_name: v${{ github.event.inputs.releaseVersion }}
           name: Release v${{ github.event.inputs.releaseVersion }}
           generate_release_notes: true
-          body: |
-            ## Docker Image
-  
-            The Docker image for this release is available at:
-            `docker pull roomelephant/elephlink:${{ github.event.inputs.releaseVersion }}`
-  
-            You can also use the `latest` tag:
-            `docker pull roomelephant/elephlink:latest`
-  
-            # Additional Notes
           files: |
-            build/native/nativeCompile/*
+            build/**/*
           draft: false
           prerelease: ${{ github.event.inputs.prerelease == 'true' }}
         env:
