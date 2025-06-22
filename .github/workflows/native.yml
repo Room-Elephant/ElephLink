@@ -1,0 +1,68 @@
+name: Native
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseVersion:
+        description: 'Release version'
+        required: true
+      developmentVersion:
+        description: 'Next development version'
+        required: true
+      prerelease:
+        description: 'Is pre release'
+        required: false
+        default: 'true'
+
+jobs:
+  build:
+    name: WebApp on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    steps:
+
+      - name: Show input parameters
+        run: |
+          echo "Release version: ${{ github.event.inputs.releaseVersion }}"
+          echo "Development version: ${{ github.event.inputs.developmentVersion }}"
+          echo "Is prerelease: ${{ github.event.inputs.prerelease == 'true' }}"
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          native-image-job-reports: 'true'
+
+      - name: compile
+        run: mvn -B native:compile -Pnative
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.event.inputs.releaseVersion }}
+          name: Release v${{ github.event.inputs.releaseVersion }}
+          generate_release_notes: true
+          body: |
+            ## Docker Image
+  
+            The Docker image for this release is available at:
+            `docker pull roomelephant/elephlink:${{ github.event.inputs.releaseVersion }}`
+  
+            You can also use the `latest` tag:
+            `docker pull roomelephant/elephlink:latest`
+  
+            # Additional Notes
+          files: |
+            build/native/nativeCompile/*
+          draft: false
+          prerelease: ${{ github.event.inputs.prerelease == 'true' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
