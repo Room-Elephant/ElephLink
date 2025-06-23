@@ -4,17 +4,17 @@ import lombok.Builder;
 
 @Builder
 public record AuthConfig(
-    String authEmail,
-    AuthMethod authMethod,
-    String authKey,
+    String email,
+    Method method,
+    String key,
     String zoneIdentifier
 ) {
-  public enum AuthMethod {
+  public enum Method {
     GLOBAL("global"), TOKEN("token");
 
     private final String value;
 
-    AuthMethod(String value) {
+    Method(String value) {
       this.value = value;
     }
 
@@ -22,25 +22,8 @@ public record AuthConfig(
       return value;
     }
 
-    public static AuthMethod fromString(String text) {
+    public static Method fromString(String text) {
       return valueOf(text.toUpperCase());
-    }
-  }
-
-  public enum AuthProperties {
-    AUTH_EMAIL("authEmail"),
-    AUTH_METHOD("authMethod"),
-    AUTH_KEY("authKey"),
-    ZONE_IDENTIFIER("zoneIdentifier");
-
-    private final String key;
-
-    AuthProperties(String key) {
-      this.key = key;
-    }
-
-    public String key() {
-      return key;
     }
   }
 }

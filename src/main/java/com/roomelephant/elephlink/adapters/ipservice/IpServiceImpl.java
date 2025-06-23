@@ -47,7 +47,7 @@ public class IpServiceImpl implements IpService {
 
       String ip = response.body().trim();
       if (ipv4Pattern.matcher(ip).matches()) {
-        log.debug("Current public IP {}", ip);
+        log.debug("Current public IP {}.", ip);
         return Optional.of(ip);
       }
     }
@@ -59,7 +59,7 @@ public class IpServiceImpl implements IpService {
     try {
       return client.send(request, HttpResponse.BodyHandlers.ofString());
     } catch (Exception e) {
-      log.debug("Failed to fetch current ip", e);
+      log.debug("Failed to fetch current ip.", e);
       Thread.currentThread().interrupt();
       return null;
     }
