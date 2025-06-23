@@ -5,6 +5,6 @@ if [ -n "${JAVA_OPTS}" ]; then
 fi
 
 exec java ${JAVA_OPTS} -jar /app/elephlink/app.jar \
-  --authConfigurationFile=/config/config.yml \
-  --recordsConfigurationFile=/config/records.yml \
-  --ipListConfigurationFile=/config/iplist.yml
+  --auth-file=/config/auth.yml \
+  --dns-records-file=/config/dns-records.yml \
+  --ip-service-file=/config/ip-services.yml

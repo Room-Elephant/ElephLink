@@ -32,24 +32,21 @@ public class CloudFlareServiceImpl implements CloudFlareService {
 
   @Override
   public boolean isValidToken() {
-    Map<String, String> headers = Map.of("Authorization", BEARER + authConfig.authKey());
+    Map<String, String> headers = Map.of("Authorization", BEARER + authConfig.key());
     String response = client.get(TOKEN_VALIDATION_URL, headers);
 
     TokenVerifyResponse verify;
     try {
       verify = objectMapper.readValue(response, TokenVerifyResponse.class);
     } catch (JsonProcessingException e) {
-      log.error("Failed to parse token", e);
-      return false;
+      throw new RequestFailedException("Failed to parse token response.", e);
     }
 
     if (verify.isSuccess() && verify.getResult() != null && ACTIVE.equals(verify.getResult().getStatus())) {
-      log.debug("Successfully validated token");
+      log.debug("Successfully validated token.");
       return true;
     }
 
-    log.error("Failed to validate token. Status: {}", verify.getResult() != null
-        ? verify.getResult().getStatus() : "Invalid token configuration");
     return false;
   }
 
@@ -63,7 +60,7 @@ public class CloudFlareServiceImpl implements CloudFlareService {
     try {
       dnsRecords = objectMapper.readValue(response, DnsRecordsResponse.class);
     } catch (JsonProcessingException e) {
-      throw new RequestFailedException("Failed to parse response", e);
+      throw new RequestFailedException("Failed to parse dns records response.", e);
     }
 
     if (dnsRecords.getResult() == null || dnsRecords.getResult().isEmpty()) {
@@ -91,7 +88,7 @@ public class CloudFlareServiceImpl implements CloudFlareService {
         .put("name", dnsRecord.getName())
         .put("content", dnsRecord.getContent())
         .put("ttl", dnsRecord.getTtl())
-        .put("proxied", dnsRecord.isProxie());
+        .put("proxied", dnsRecord.isProxy());
 
     String response = client.patch(requestUrl, headers, body.toString());
 
@@ -99,22 +96,22 @@ public class CloudFlareServiceImpl implements CloudFlareService {
     try {
       jsonResponse = objectMapper.readTree(response);
     } catch (JsonProcessingException e) {
-      throw new RequestFailedException("Failed to parse response", e);
+      throw new RequestFailedException("Failed to parse response.", e);
     }
 
     return jsonResponse.path("success").asBoolean(false);
   }
 
   private Map<String, String> getAuthHeaders() {
-    String authHeader = switch (authConfig.authMethod()) {
+    String authHeader = switch (authConfig.method()) {
       case TOKEN -> "Authorization";
       case GLOBAL -> "X-Auth-Key";
     };
-    String authValue = switch (authConfig.authMethod()) {
-      case TOKEN -> BEARER + authConfig.authKey();
-      case GLOBAL -> authConfig.authKey();
+    String authValue = switch (authConfig.method()) {
+      case TOKEN -> BEARER + authConfig.key();
+      case GLOBAL -> authConfig.key();
     };
 
-    return Map.of(authHeader, authValue, "X-Auth-Email", authConfig.authEmail());
+    return Map.of(authHeader, authValue, "X-Auth-Email", authConfig.email());
   }
 }

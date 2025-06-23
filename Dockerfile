@@ -6,9 +6,9 @@ RUN groupadd -r elephlinkGroup \
 WORKDIR /app
 
 COPY target/elephlink-jar-with-dependencies.jar elephlink/app.jar
-COPY src/main/resources/config.yml /config/config.yml
-COPY src/main/resources/iplist.yml /config/iplist.yml
-COPY src/main/resources/records.yml /config/records.yml
+COPY src/main/resources/auth.yml /config/auth.yml
+COPY src/main/resources/ip-services.yml /config/ip-services.yml
+COPY src/main/resources/dns-records.yml /config/dns-records.yml
 
 COPY entrypoint.sh entrypoint.sh
 RUN chmod +x entrypoint.sh

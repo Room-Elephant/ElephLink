@@ -4,7 +4,8 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record IpServiceConfig(
-    List<String> services
+public record DnsRecordsConfig(
+    List<String> records,
+    String cronExpression
 ) {
 }

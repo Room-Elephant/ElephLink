@@ -1,0 +1,3 @@
+records:
+  - domain.com
+cron-expression: "0 4 * * *" # UNIX Cron Expression
