@@ -2,10 +2,11 @@
   <configuration default="false" name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="com.roomelephant.elephlink.Main" />
     <module name="elephlink" />
-    <option name="PROGRAM_PARAMETERS" value="--authConfigurationFile=$ContentRoot$/src/main/resources/config.yml --recordsConfigurationFile=$ContentRoot$/src/main/resources/records.yml --ipListConfigurationFile=$ContentRoot$/src/main/resources/iplist.yml" />
+    <option name="PROGRAM_PARAMETERS" value="--auth-file=$ContentRoot$/src/main/resources/auth.yml --dns-file=$ContentRoot$/src/main/resources/dns-records.yml --ip-service-file=$ContentRoot$/src/main/resources/ip-services.yml" />
+    <option name="VM_PARAMETERS" value="-Xmx15m -XX:+UseSerialGC" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="com.roomelephant.elephlink.infra.*" />
+        <option name="PATTERN" value="com.roomelephant.elephlink.domain.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

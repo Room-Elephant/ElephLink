@@ -35,16 +35,17 @@ public abstract class BaseConfigurationLoader<T> implements ConfigLoader<T> {
     Map<String, Object> ymlConfig = ymlLoader.parse(configPath.toString());
 
     if (ymlConfig == null) {
-      throw new IllegalArgumentException("No configurations found in file " + fileName);
+      throw new IllegalArgumentException("No configurations found in file " + fileName + ".");
     }
 
-    return convert(ymlConfig);
+    T config = convert(ymlConfig);
+    log.debug("Loaded configuration file '{}': {}", fileName, config);
+    return config;
   }
 
   protected abstract T convert(Map<String, Object> ymlConfig);
 
   protected abstract String getFileName();
-
 
   protected List<String> castToListString(List<?> casted) {
     return casted.stream()

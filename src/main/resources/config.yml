@@ -1,4 +1,0 @@
-authEmail: # The email used to login 'https://dash.cloudflare.com
-authMethod: token # Set to "global" for Global API Key or "token" for Scoped API Token
-authKey: # Your API Token or Global API Key
-zoneIdentifier: # Can be found in the "Overview" tab of your domain

@@ -13,7 +13,7 @@ public class DnsRecord {
   private String name;
   private String content;
   private int ttl;
-  private boolean proxie;
+  private boolean proxy;
 
   public enum Type { A }
 }

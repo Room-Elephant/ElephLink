@@ -19,11 +19,11 @@ public class YmlParser {
       Load load = new Load(settings);
       return (Map<String, Object>) load.loadFromInputStream(fis);
     } catch (FileNotFoundException e) {
-      throw new IllegalArgumentException("file '" + fileName + "' not found", e);
+      throw new IllegalArgumentException("File '" + fileName + "' not found.", e);
     } catch (IOException e) {
-      throw new IllegalArgumentException("Error while loading the file " + fileName, e);
+      throw new IllegalArgumentException("Error while loading the file '" + fileName + "'.", e);
     } catch (Exception e) {
-      throw new IllegalArgumentException("Something went wrong loading the file " + fileName, e);
+      throw new IllegalArgumentException("Something went wrong loading the file '" + fileName + "'.", e);
     }
   }
 }
