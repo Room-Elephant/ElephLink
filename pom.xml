@@ -16,6 +16,7 @@
         <puppycrawl.version>10.23.1</puppycrawl.version>
         <assembly.plugin.version>3.7.1</assembly.plugin.version>
         <release.plugin.version>3.0.1</release.plugin.version>
+        <native.maven.plugin.version>0.10.6</native.maven.plugin.version>
 
         <slfj.version>2.0.17</slfj.version>
         <logback.version>1.5.18</logback.version>
@@ -147,6 +148,38 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>${native.maven.plugin.version}</version>
+                        <extensions>true</extensions>
+                        <executions>
+                            <execution>
+                                <id>build-native</id>
+                                <goals>
+                                    <goal>compile-no-fork</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                            <execution>
+                                <id>test-native</id>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <phase>test</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <distributionManagement>
         <repository>
