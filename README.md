@@ -55,6 +55,7 @@ docker run \
   --name elephlink \
   --restart unless-stopped \
   -v /path/to/config/dir/:/config \
+  -e JAVA_OPTS=-Xmx15m -XX:+UseSerialGC \
   roomelephant/elephlink:latest
 ```
 
