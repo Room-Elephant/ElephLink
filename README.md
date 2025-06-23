@@ -141,8 +141,8 @@ Requires Java 21 or higher.
 
 ```bash
 java -jar elephlink-1.0.0-jar-with-dependencies.jar \
-   --auth-fil=path/to/auth.yaml \
-   --dns-fil=path/to/dns-records.yaml \
+   --auth-file=path/to/auth.yaml \
+   --dns-records-file=path/to/dns-records.yaml \
    --ip-service-file=path/to/ip-services.yaml
 ```
 
