@@ -1,4 +1,4 @@
-package com.roomelephant.elephlink.infra.config;
+package com.roomelephant.elephlink.infra.config.loaders;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,10 +10,10 @@ import org.snakeyaml.engine.v2.api.Load;
 import org.snakeyaml.engine.v2.api.LoadSettings;
 
 @Slf4j
-public class YmlParser {
+class YmlParser {
 
   @SuppressWarnings("unchecked")
-  public Map<String, Object> parse(String fileName) {
+  Map<String, Object> parse(String fileName) {
     try (FileInputStream fis = new FileInputStream(Path.of(fileName).toFile())) {
       LoadSettings settings = LoadSettings.builder().build();
       Load load = new Load(settings);

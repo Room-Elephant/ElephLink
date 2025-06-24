@@ -6,7 +6,7 @@
     <option name="VM_PARAMETERS" value="-Xmx15m -XX:+UseSerialGC" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="com.roomelephant.elephlink.domain.*" />
+        <option name="PATTERN" value="com.roomelephant.elephlink.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

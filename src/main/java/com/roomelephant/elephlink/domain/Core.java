@@ -6,7 +6,7 @@ import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class Elephlink {
+public class Core {
   private final DnsRecordsConfig dnsRecordsConfig;
   private final CloudFlareService cloudFlareService;
   private final IpService ipService;
@@ -14,8 +14,8 @@ public class Elephlink {
   private final LocalCache cache = LocalCache.getInstance();
 
 
-  public Elephlink(DnsRecordsConfig dnsRecordsConfig, CloudFlareService cloudFlareService, IpService ipService,
-                   TaskManager taskManager) {
+  public Core(DnsRecordsConfig dnsRecordsConfig, CloudFlareService cloudFlareService, IpService ipService,
+              TaskManager taskManager) {
     this.dnsRecordsConfig = dnsRecordsConfig;
     this.cloudFlareService = cloudFlareService;
     this.ipService = ipService;

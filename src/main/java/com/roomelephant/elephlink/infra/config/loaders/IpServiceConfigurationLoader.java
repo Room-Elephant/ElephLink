@@ -1,10 +1,11 @@
-package com.roomelephant.elephlink.infra.config.ipservice;
+package com.roomelephant.elephlink.infra.config.loaders;
 
 import static com.roomelephant.elephlink.infra.config.ConfigurationFiles.IP_SERVICES_FILE;
-import static com.roomelephant.elephlink.infra.config.ipservice.IpServiceConfigurationLoader.IpServicesProperties.IP_SERVICES;
+import static com.roomelephant.elephlink.infra.config.loaders.IpServiceConfigurationLoader.IpServicesProperties.IP_SERVICES;
+import static com.roomelephant.elephlink.infra.config.loaders.IpServiceConfigurationLoader.IpServicesProperties.TIMEOUT;
 
 import com.roomelephant.elephlink.domain.model.IpServiceConfig;
-import com.roomelephant.elephlink.infra.config.BaseConfigurationLoader;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,14 @@ public class IpServiceConfigurationLoader extends BaseConfigurationLoader<IpServ
   @Override
   protected IpServiceConfig convert(Map<String, Object> ymlConfig) {
     Object o = ymlConfig.get(IP_SERVICES.key());
+    Long timeoutRaw = null;
+    try {
+      timeoutRaw = Long.valueOf((Integer) ymlConfig.get(TIMEOUT.key()));
+    } catch (Exception e) {
+      timeoutRaw = 1000L;
+
+    }
+    Duration timeout = Duration.ofMillis(timeoutRaw);
 
     List<String> list = switch (o) {
       case List<?> casted -> castToListString(casted);
@@ -24,6 +33,7 @@ public class IpServiceConfigurationLoader extends BaseConfigurationLoader<IpServ
 
     return IpServiceConfig.builder()
         .services(list)
+        .timeout(timeout)
         .build();
 
   }
@@ -34,7 +44,9 @@ public class IpServiceConfigurationLoader extends BaseConfigurationLoader<IpServ
   }
 
   public enum IpServicesProperties {
-    IP_SERVICES("services");
+    IP_SERVICES("services"),
+    TIMEOUT("timeout-in-milliseconds"),
+    ;
 
     private final String key;
 

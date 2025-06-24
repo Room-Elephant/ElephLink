@@ -1,5 +1,6 @@
-package com.roomelephant.elephlink.infra.config;
+package com.roomelephant.elephlink.infra.config.loaders;
 
+import com.roomelephant.elephlink.infra.ConfigLoader;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -8,7 +9,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class BaseConfigurationLoader<T> implements ConfigLoader<T> {
+abstract class BaseConfigurationLoader<T> implements ConfigLoader<T> {
   private final YmlParser ymlLoader;
 
   protected BaseConfigurationLoader() {

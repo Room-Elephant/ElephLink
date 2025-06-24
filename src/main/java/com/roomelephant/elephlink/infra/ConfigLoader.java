@@ -1,4 +1,4 @@
-package com.roomelephant.elephlink.infra.config;
+package com.roomelephant.elephlink.infra;
 
 /**
  * Generic interface for loading configuration files.
