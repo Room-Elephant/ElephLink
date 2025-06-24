@@ -23,7 +23,7 @@ public class Core {
   }
 
   public void validateConfigurations() {
-    initializeCloudflare();
+    initializeDnsService();
     initializeTaskManager();
     initializeIpServices();
   }
@@ -34,18 +34,16 @@ public class Core {
     Runtime.getRuntime().addShutdownHook(new Thread(taskManager::shutdown));
   }
 
-  private void initializeCloudflare() {
-    boolean validToken = dnsService.isValidToken();
-    if (!validToken) {
-      throw new IllegalArgumentException("Cloudflare token is not valid.");
+  private void initializeDnsService() {
+    boolean hasInitiated = dnsService.init();
+    if (!hasInitiated) {
+      throw new IllegalArgumentException("DNS service token is not valid.");
     }
 
     for (String dnsRecord : dnsRecordsConfig.records()) {
       Optional<DnsRecord> cfDnsRecord = dnsService.getDnsRecord(dnsRecord);
       if (cfDnsRecord.isEmpty()) {
-        throw new IllegalArgumentException("Record '" + dnsRecord
-            + "' does not exist. Please create one first. "
-            + "Additionally, confirm if the zone identifier is correctly configured.");
+        throw new IllegalArgumentException("Record '" + dnsRecord + "' does not exist. Please create one first.");
       }
       cache.getDnsRecords().add(cfDnsRecord.get());
     }
