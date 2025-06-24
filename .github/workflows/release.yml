@@ -86,6 +86,7 @@ jobs:
 
       - name: Rename jar for release
         run: |
+          mkdir -p release
           mv target/elephlink-jar-with-dependencies.jar release/elephlink-${{ github.event.inputs.releaseVersion }}.jar
 
       - name: Create GitHub Release
