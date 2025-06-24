@@ -98,7 +98,7 @@ records:
 # UNIX Cron Expression for the update schedule.
 # This example runs every day at 04:00 AM
 cron-expression: "0 4 * * *"
-# Timeout for requesting external ip
+# Timeout for requesting and updating dns records
 timeout-in-milliseconds: 3000 # default 1000 milliseconds
 ```
 
