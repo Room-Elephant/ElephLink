@@ -1,4 +1,4 @@
 records:
   - domain.com
 cron-expression: "0 4 * * *" # UNIX Cron Expression
-timeout-in-milliseconds: 3000
+timeout-in-milliseconds: 10000
