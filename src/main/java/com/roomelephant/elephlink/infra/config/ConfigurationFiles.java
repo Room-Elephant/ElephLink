@@ -1,7 +1,7 @@
 package com.roomelephant.elephlink.infra.config;
 
 public enum ConfigurationFiles {
-  AUTH_FILE("auth.yml"),
+  CLOUDFLARE_FILE("cloudflare.yml"),
   DNS_RECORDS_FILE("dns-records.yml"),
   IP_SERVICES_FILE("ip-services.yml");
 

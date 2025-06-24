@@ -37,10 +37,10 @@ your Internet Service Provider assigns you a dynamic IP address.
 
 ### Prerequisites
 
-- A Cloudflare account.
+- A Cloudflare account: https://dash.cloudflare.com/sign-up
 - A registered domain name managed by Cloudflare.
 - An `A` record created in your Cloudflare DNS dashboard that you want to keep updated. The initial IP can be a placeholder like `1.1.1.1`.
-- A Cloudflare API Token (recommended) or your Global API Key.
+- A Cloudflare API Token: https://dash.cloudflare.com/profile/api-tokens
 
 | Type | Name       | Content | Proxy status | TTL  | 
 |------|------------|---------|--------------|------|
@@ -66,7 +66,7 @@ services:
   elephlink:
     image: roomelephant/elephlink:latest
     volumes:
-      - /path/to/config/dir/auth.yml:/config/auth.yml
+      - /path/to/config/dir/cloudflare.yml:/config/cloudflare.yml
       - /path/to/config/dir/ip-services.yml:/config/ip-services.yml
       - /path/to/config/dir/dns-records.yml:/config/dns-records.yml
 ```
@@ -77,13 +77,11 @@ The application will validate your configuration, verify the DNS records in Clou
 
 Create three YAML configuration files. You can start by copying the examples from `src/main/resources/`.
 
-[auth.yml](https://github.com/Room-Elephant/ElephLink/blob/main/src/main/resources/auth.yml): This file handles your Cloudflare API credentials.
+[cloudflare.yml](https://github.com/Room-Elephant/ElephLink/blob/main/src/main/resources/cloudflare.yml): This file handles your Cloudflare API credentials.
 
 ```yml
 # The email associated with your Cloudflare account.
 email: user@example.com
-# Choose between "token" for a Scoped API Token (recommended) or "global" for a Global API Key.
-method: token
 # Your Cloudflare API token or Global API key.
 key: YOUR_CLOUDFLARE_API_TOKEN
 # The Zone Identifier for your domain, found on the "Overview" page in the Cloudflare dashboard.
@@ -143,7 +141,7 @@ Requires Java 21 or higher.
 
 ```bash
 java -jar elephlink-1.0.0-jar-with-dependencies.jar \
-   --auth-file=path/to/auth.yaml \
+   --cloudflare-file=path/to/cloudflare.yaml \
    --dns-records-file=path/to/dns-records.yaml \
    --ip-service-file=path/to/ip-services.yaml
 ```
@@ -176,7 +174,7 @@ docker build -t elephlink .
 ```
 
 3. **Run the container**
-   Place your configuration files (auth.yaml, dns-records.yaml, ip-services.yaml) in a single directory (e.g., ./config). Then, run the
+   Place your configuration files (cloudflare.yaml, dns-records.yaml, ip-services.yaml) in a single directory (e.g., ./config). Then, run the
    container with that directory mounted as a volume.
 
 ```bash

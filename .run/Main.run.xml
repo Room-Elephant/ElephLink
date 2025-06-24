@@ -2,7 +2,7 @@
   <configuration default="false" name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="com.roomelephant.elephlink.Main" />
     <module name="elephlink" />
-    <option name="PROGRAM_PARAMETERS" value="--auth-file=$ContentRoot$/src/main/resources/auth.yml --dns-records-file=$ContentRoot$/src/main/resources/dns-records.yml --ip-service-file=$ContentRoot$/src/main/resources/ip-services.yml" />
+    <option name="PROGRAM_PARAMETERS" value="--cloudflare-file=$ContentRoot$/src/main/resources/cloudflare.yml --dns-records-file=$ContentRoot$/src/main/resources/dns-records.yml --ip-service-file=$ContentRoot$/src/main/resources/ip-services.yml" />
     <option name="VM_PARAMETERS" value="-Xmx15m -XX:+UseSerialGC" />
     <extension name="coverage">
       <pattern>

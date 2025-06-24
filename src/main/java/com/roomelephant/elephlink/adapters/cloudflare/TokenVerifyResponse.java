@@ -19,7 +19,7 @@ class TokenVerifyResponse {
     private Status status;
   }
 
-  public enum Status {
+  enum Status {
     @JsonProperty("active")
     ACTIVE,
     @JsonProperty("disabled")

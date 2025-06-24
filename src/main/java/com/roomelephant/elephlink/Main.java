@@ -1,21 +1,21 @@
 package com.roomelephant.elephlink;
 
-import static com.roomelephant.elephlink.infra.config.ConfigurationProperties.AUTH_CONFIGURATION_FILE;
+import static com.roomelephant.elephlink.infra.config.ConfigurationProperties.CLOUDFLARE_CONFIGURATION_FILE;
 import static com.roomelephant.elephlink.infra.config.ConfigurationProperties.IP_LIST_CONFIGURATION_FILE;
 import static com.roomelephant.elephlink.infra.config.ConfigurationProperties.RECORDS_CONFIGURATION_FILE;
 
-import com.roomelephant.elephlink.adapters.cloudflare.CloudFlareServiceImpl;
+import com.roomelephant.elephlink.adapters.cloudflare.CloudFlareService;
 import com.roomelephant.elephlink.adapters.ipservice.IpServiceImpl;
-import com.roomelephant.elephlink.domain.CloudFlareService;
+import com.roomelephant.elephlink.domain.DnsService;
 import com.roomelephant.elephlink.domain.Core;
 import com.roomelephant.elephlink.domain.IpService;
 import com.roomelephant.elephlink.domain.TaskManager;
-import com.roomelephant.elephlink.domain.model.AuthConfig;
+import com.roomelephant.elephlink.adapters.cloudflare.CloudflareConfig;
 import com.roomelephant.elephlink.domain.model.DnsRecordsConfig;
 import com.roomelephant.elephlink.domain.model.IpServiceConfig;
 import com.roomelephant.elephlink.infra.TaskManagerImpl;
 import com.roomelephant.elephlink.infra.ConfigLoader;
-import com.roomelephant.elephlink.infra.config.loaders.AuthConfigurationLoader;
+import com.roomelephant.elephlink.infra.config.loaders.CloudflareConfigurationLoader;
 import com.roomelephant.elephlink.infra.config.loaders.RecordsConfigurationLoader;
 import com.roomelephant.elephlink.infra.config.loaders.IpServiceConfigurationLoader;
 import java.util.Arrays;
@@ -32,9 +32,9 @@ public class Main {
 
     Core core;
     try {
-      ConfigLoader<AuthConfig> authLoader = new AuthConfigurationLoader();
-      AuthConfig authConfig = authLoader.load(parameters.get(AUTH_CONFIGURATION_FILE.key()));
-      CloudFlareService cloudFlareServiceImpl = new CloudFlareServiceImpl(authConfig);
+      ConfigLoader<CloudflareConfig> cloudflareLoader = new CloudflareConfigurationLoader();
+      CloudflareConfig cloudflareConfig = cloudflareLoader.load(parameters.get(CLOUDFLARE_CONFIGURATION_FILE.key()));
+      DnsService dnsService = new CloudFlareService(cloudflareConfig);
 
       ConfigLoader<DnsRecordsConfig> dnsRecordsLoader = new RecordsConfigurationLoader();
       DnsRecordsConfig dnsRecordsConfig = dnsRecordsLoader.load(parameters.get(RECORDS_CONFIGURATION_FILE.key()));
@@ -44,7 +44,7 @@ public class Main {
       IpServiceConfig ipConfig = ipServicesLoader.load(parameters.get(IP_LIST_CONFIGURATION_FILE.key()));
       IpService ipServiceImpl = new IpServiceImpl(ipConfig);
 
-      core = new Core(dnsRecordsConfig, cloudFlareServiceImpl, ipServiceImpl, taskManager);
+      core = new Core(dnsRecordsConfig, dnsService, ipServiceImpl, taskManager);
     } catch (Exception e) {
       log.error("Validate your configuration. {}", e.getMessage());
       System.exit(1);

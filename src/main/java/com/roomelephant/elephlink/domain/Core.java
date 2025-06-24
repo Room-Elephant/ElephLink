@@ -8,16 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Core {
   private final DnsRecordsConfig dnsRecordsConfig;
-  private final CloudFlareService cloudFlareService;
+  private final DnsService DNSService;
   private final IpService ipService;
   private final TaskManager taskManager;
   private final LocalCache cache = LocalCache.getInstance();
 
 
-  public Core(DnsRecordsConfig dnsRecordsConfig, CloudFlareService cloudFlareService, IpService ipService,
+  public Core(DnsRecordsConfig dnsRecordsConfig, DnsService DNSService, IpService ipService,
               TaskManager taskManager) {
     this.dnsRecordsConfig = dnsRecordsConfig;
-    this.cloudFlareService = cloudFlareService;
+    this.DNSService = DNSService;
     this.ipService = ipService;
     this.taskManager = taskManager;
   }
@@ -35,13 +35,13 @@ public class Core {
   }
 
   private void initializeCloudflare() {
-    boolean validToken = cloudFlareService.isValidToken();
+    boolean validToken = DNSService.isValidToken();
     if (!validToken) {
       throw new IllegalArgumentException("Cloudflare token is not valid.");
     }
 
     for (String dnsRecord : dnsRecordsConfig.records()) {
-      Optional<DnsRecord> cfDnsRecord = cloudFlareService.getDnsRecord(dnsRecord);
+      Optional<DnsRecord> cfDnsRecord = DNSService.getDnsRecord(dnsRecord);
       if (cfDnsRecord.isEmpty()) {
         throw new IllegalArgumentException("Record '" + dnsRecord
             + "' does not exist. Please create one first. "
@@ -96,7 +96,7 @@ public class Core {
 
       dnsRecord.setContent(currentIp);
       try {
-        boolean result = cloudFlareService.updateRecord(dnsRecord);
+        boolean result = DNSService.updateRecord(dnsRecord);
         if (result) {
           log.info("Successfully updated cloudflare record '{}' to use ip {} instead of {}.", dnsRecord.getName(),
               currentIp, previousIp);
