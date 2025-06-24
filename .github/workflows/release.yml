@@ -84,6 +84,10 @@ jobs:
           outputs: |
             type=image,name=roomelephant/elephlink,annotation-tag=${{ github.event.inputs.releaseVersion }}
 
+      - name: Rename jar for release
+        run: |
+          mv target/elephlink-jar-with-dependencies.jar release/elephlink-${{ github.event.inputs.releaseVersion }}.jar
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
@@ -101,8 +105,7 @@ jobs:
   
             # Additional Notes
           files: |
-            target/*.jar
-            target/*.pom
+            release/*.jar
           draft: false
           prerelease: ${{ github.event.inputs.prerelease == 'true' }}
         env:
