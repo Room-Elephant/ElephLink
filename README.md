@@ -16,7 +16,7 @@ your Internet Service Provider assigns you a dynamic IP address.
 - **Effortless**: Runs on a schedule to automatically detect IP changes and update your DNS records in seconds.
 - **Flexible**: Supports multiple domains, configurable IP detection services and cron-based scheduling.
 - **Secure**: Works with modern Cloudflare API tokens for granular, secure access.
-- **Footprint**: Low footprint on your system, around 10 Mb of RAM.
+- **Footprint**: Low footprint on your system.
 
 ## 🚀 Features
 
@@ -123,6 +123,8 @@ ip-services:
   - https://api.ipify.org
   - https://icanhazip.com
   - https://ipinfo.io/ip
+# Timeout for requesting external ip
+timeout-in-milliseconds: 1000 # default 1000 milliseconds
 ```
 
 ### Running Java
