@@ -1,11 +1,10 @@
-package com.roomelephant.elephlink.infra.config.dnsrecords;
+package com.roomelephant.elephlink.infra.config.loaders;
 
 import static com.roomelephant.elephlink.infra.config.ConfigurationFiles.DNS_RECORDS_FILE;
-import static com.roomelephant.elephlink.infra.config.dnsrecords.RecordsConfigurationLoader.RecordProperties.CRON;
-import static com.roomelephant.elephlink.infra.config.dnsrecords.RecordsConfigurationLoader.RecordProperties.RECORDS;
+import static com.roomelephant.elephlink.infra.config.loaders.RecordsConfigurationLoader.RecordProperties.CRON;
+import static com.roomelephant.elephlink.infra.config.loaders.RecordsConfigurationLoader.RecordProperties.RECORDS;
 
 import com.roomelephant.elephlink.domain.model.DnsRecordsConfig;
-import com.roomelephant.elephlink.infra.config.BaseConfigurationLoader;
 import java.util.List;
 import java.util.Map;
 
