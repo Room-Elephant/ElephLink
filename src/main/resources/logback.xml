@@ -1,5 +1,7 @@
 <configuration>
-    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
+    
+    <property name="log.level" value="${log.level:-INFO}"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -7,7 +9,7 @@
         </encoder>
     </appender>
 
-    <root level="${log.level:-INFO}">
-        <appender-ref ref="CONSOLE" />
+    <root level="${log.level}">
+        <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>
