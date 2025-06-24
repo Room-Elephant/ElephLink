@@ -187,6 +187,10 @@ docker run --name elephlink \
   elephlink
 ```
 
+### Troubleshooting
+
+You can use `-Dlog.level=DEBUG` to activate debugging logs. On docker, you can use the env variable `JAVA_OPTS` to pass the logging level.
+
 ## 🤝 Contributing
 
 Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
