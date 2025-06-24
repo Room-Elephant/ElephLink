@@ -11,7 +11,7 @@ import java.util.Optional;
  * including validating the user's authentication token, retrieving DNS records,
  * and updating existing records.</p>
  */
-public interface CloudFlareService {
+public interface DnsService {
   /**
    * Validates the user's Cloudflare API token.
    *

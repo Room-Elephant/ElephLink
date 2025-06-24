@@ -6,7 +6,7 @@ RUN groupadd -r elephlinkGroup \
 WORKDIR /app
 
 COPY target/elephlink-jar-with-dependencies.jar elephlink/app.jar
-COPY src/main/resources/auth.yml /config/auth.yml
+COPY src/main/resources/cloudflare.yml /config/cloudflare.yml
 COPY src/main/resources/ip-services.yml /config/ip-services.yml
 COPY src/main/resources/dns-records.yml /config/dns-records.yml
 

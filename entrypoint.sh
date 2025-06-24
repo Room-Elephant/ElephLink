@@ -5,6 +5,6 @@ if [ -n "${JAVA_OPTS}" ]; then
 fi
 
 exec java -XX:+UseSerialGC ${JAVA_OPTS} -jar /app/elephlink/app.jar \
-  --auth-file=/config/auth.yml \
+  --cloudflare-file=/config/cloudflare.yml \
   --dns-records-file=/config/dns-records.yml \
   --ip-service-file=/config/ip-services.yml
