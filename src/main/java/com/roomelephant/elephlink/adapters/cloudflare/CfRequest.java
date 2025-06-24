@@ -55,8 +55,10 @@ class CfRequest {
       response = SharedHttpClient.getClient().send(request, HttpResponse.BodyHandlers.ofString());
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
+      log.debug("Failed to make request to {}", url, e);
       throw new RequestFailedException("Interrupted while making request to " + url, e);
     } catch (Exception e) {
+      log.debug("Failed to make request to {}", url, e);
       throw new RequestFailedException("Failed to make request to " + url, e);
     }
 

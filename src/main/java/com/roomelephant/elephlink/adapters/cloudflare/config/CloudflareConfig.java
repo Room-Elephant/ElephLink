@@ -8,4 +8,12 @@ public record CloudflareConfig(
     String key,
     String zoneIdentifier
 ) {
+  @Override
+  public String toString() {
+    return " CloudflareConfig["
+        + "email=" + email + ", "
+        + "key=*****, "
+        + "zoneIdentifier=*****"
+        + "]";
+  }
 }
