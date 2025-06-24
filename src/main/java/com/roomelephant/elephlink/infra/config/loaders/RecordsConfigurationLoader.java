@@ -3,6 +3,7 @@ package com.roomelephant.elephlink.infra.config.loaders;
 import static com.roomelephant.elephlink.infra.config.ConfigurationFiles.DNS_RECORDS_FILE;
 import static com.roomelephant.elephlink.infra.config.loaders.RecordsConfigurationLoader.RecordProperties.CRON;
 import static com.roomelephant.elephlink.infra.config.loaders.RecordsConfigurationLoader.RecordProperties.RECORDS;
+import static com.roomelephant.elephlink.infra.config.loaders.RecordsConfigurationLoader.RecordProperties.TIMEOUT;
 
 import com.roomelephant.elephlink.domain.model.DnsRecordsConfig;
 import java.util.List;
@@ -24,6 +25,7 @@ public class RecordsConfigurationLoader extends BaseConfigurationLoader<DnsRecor
     return DnsRecordsConfig.builder()
         .records(list)
         .cronExpression(getAndValidateString(ymlConfig, CRON.key()))
+        .timeout(getDuration(ymlConfig, TIMEOUT.key()))
         .build();
 
   }
@@ -43,7 +45,8 @@ public class RecordsConfigurationLoader extends BaseConfigurationLoader<DnsRecor
 
   public enum RecordProperties {
     RECORDS("records"),
-    CRON("cron-expression");
+    CRON("cron-expression"),
+    TIMEOUT("timeout-in-milliseconds");
 
     private final String key;
 

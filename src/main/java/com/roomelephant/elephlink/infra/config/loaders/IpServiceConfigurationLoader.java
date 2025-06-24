@@ -14,14 +14,7 @@ public class IpServiceConfigurationLoader extends BaseConfigurationLoader<IpServ
   @Override
   protected IpServiceConfig convert(Map<String, Object> ymlConfig) {
     Object o = ymlConfig.get(IP_SERVICES.key());
-    Long timeoutRaw = null;
-    try {
-      timeoutRaw = Long.valueOf((Integer) ymlConfig.get(TIMEOUT.key()));
-    } catch (Exception e) {
-      timeoutRaw = 1000L;
-
-    }
-    Duration timeout = Duration.ofMillis(timeoutRaw);
+    Duration timeout = getDuration(ymlConfig, TIMEOUT.key());
 
     List<String> list = switch (o) {
       case List<?> casted -> castToListString(casted);

@@ -5,19 +5,19 @@ import static com.roomelephant.elephlink.infra.config.ConfigurationProperties.IP
 import static com.roomelephant.elephlink.infra.config.ConfigurationProperties.RECORDS_CONFIGURATION_FILE;
 
 import com.roomelephant.elephlink.adapters.cloudflare.CloudFlareService;
+import com.roomelephant.elephlink.adapters.cloudflare.config.CloudflareConfig;
 import com.roomelephant.elephlink.adapters.ipservice.IpServiceImpl;
-import com.roomelephant.elephlink.domain.DnsService;
 import com.roomelephant.elephlink.domain.Core;
+import com.roomelephant.elephlink.domain.DnsService;
 import com.roomelephant.elephlink.domain.IpService;
 import com.roomelephant.elephlink.domain.TaskManager;
-import com.roomelephant.elephlink.adapters.cloudflare.CloudflareConfig;
 import com.roomelephant.elephlink.domain.model.DnsRecordsConfig;
 import com.roomelephant.elephlink.domain.model.IpServiceConfig;
-import com.roomelephant.elephlink.infra.TaskManagerImpl;
 import com.roomelephant.elephlink.infra.ConfigLoader;
+import com.roomelephant.elephlink.infra.TaskManagerImpl;
 import com.roomelephant.elephlink.infra.config.loaders.CloudflareConfigurationLoader;
-import com.roomelephant.elephlink.infra.config.loaders.RecordsConfigurationLoader;
 import com.roomelephant.elephlink.infra.config.loaders.IpServiceConfigurationLoader;
+import com.roomelephant.elephlink.infra.config.loaders.RecordsConfigurationLoader;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
@@ -32,13 +32,13 @@ public class Main {
 
     Core core;
     try {
-      ConfigLoader<CloudflareConfig> cloudflareLoader = new CloudflareConfigurationLoader();
-      CloudflareConfig cloudflareConfig = cloudflareLoader.load(parameters.get(CLOUDFLARE_CONFIGURATION_FILE.key()));
-      DnsService dnsService = new CloudFlareService(cloudflareConfig);
-
       ConfigLoader<DnsRecordsConfig> dnsRecordsLoader = new RecordsConfigurationLoader();
       DnsRecordsConfig dnsRecordsConfig = dnsRecordsLoader.load(parameters.get(RECORDS_CONFIGURATION_FILE.key()));
       TaskManager taskManager = new TaskManagerImpl(dnsRecordsConfig);
+
+      ConfigLoader<CloudflareConfig> cloudflareLoader = new CloudflareConfigurationLoader();
+      CloudflareConfig cloudflareConfig = cloudflareLoader.load(parameters.get(CLOUDFLARE_CONFIGURATION_FILE.key()));
+      DnsService dnsService = new CloudFlareService(cloudflareConfig, dnsRecordsConfig.timeout());
 
       ConfigLoader<IpServiceConfig> ipServicesLoader = new IpServiceConfigurationLoader();
       IpServiceConfig ipConfig = ipServicesLoader.load(parameters.get(IP_LIST_CONFIGURATION_FILE.key()));
