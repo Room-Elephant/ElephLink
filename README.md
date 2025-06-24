@@ -119,7 +119,7 @@ A quick guide to cron expressions:
 
 ```yml
 # A list of plaintext IP reflector services.
-ip-services:
+services:
   - https://api.ipify.org
   - https://icanhazip.com
   - https://ipinfo.io/ip
@@ -134,7 +134,7 @@ timeout-in-milliseconds: 1000 # default 1000 milliseconds
 Download jar from the release notes: https://github.com/Room-Elephant/ElephLink/releases
 
 ```bash
-wget https://github.com/Room-Elephant/ElephLink/releases/download/<latest version>/elephlink-jar-with-dependencies.jar
+wget https://github.com/Room-Elephant/ElephLink/releases/download/v1.0.1/elephlink-1.0.1.jar
 ```
 
 2. **Run the Application**
@@ -142,7 +142,7 @@ wget https://github.com/Room-Elephant/ElephLink/releases/download/<latest versio
 Requires Java 21 or higher.
 
 ```bash
-java -jar elephlink-1.0.0-jar-with-dependencies.jar \
+java -jar elephlink-1.0.1.jar \
    --cloudflare-file=path/to/cloudflare.yaml \
    --dns-records-file=path/to/dns-records.yaml \
    --ip-service-file=path/to/ip-services.yaml
@@ -151,7 +151,7 @@ java -jar elephlink-1.0.0-jar-with-dependencies.jar \
 If your configuration files are in the same directory as the JAR, you can omit the arguments:
 
 ```bash
-java -jar elephlink-1.0.0-jar-with-dependencies.jar
+java -jar elephlink-1.0.1.jar
 ```
 
 ### Build locally
@@ -186,6 +186,10 @@ docker run --name elephlink \
   -e JAVA_OPTS=-Xmx15m -XX:+UseSerialGC \
   elephlink
 ```
+
+### Troubleshooting
+
+You can use `-Dlog.level=DEBUG` to activate debugging logs. On docker, you can use the env variable `JAVA_OPTS` to pass the logging level.
 
 ## 🤝 Contributing
 
