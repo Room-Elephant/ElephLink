@@ -29,7 +29,7 @@ public class CloudFlareService implements DnsService {
   }
 
   @Override
-  public boolean isValidToken() {
+  public boolean init() {
     Map<String, String> headers = Map.of(AUTHORIZATION, BEARER + cloudflareConfig.key());
     TokenVerifyResponse response = client.get(TOKEN_VALIDATION_URL, headers, TokenVerifyResponse.class);
 
