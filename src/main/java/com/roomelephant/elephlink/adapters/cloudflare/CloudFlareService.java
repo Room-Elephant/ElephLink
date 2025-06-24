@@ -3,16 +3,16 @@ package com.roomelephant.elephlink.adapters.cloudflare;
 import static com.roomelephant.elephlink.adapters.cloudflare.DnsRecordsResponse.DnsRecordType.A;
 import static com.roomelephant.elephlink.adapters.cloudflare.TokenVerifyResponse.Status.ACTIVE;
 
+import com.roomelephant.elephlink.adapters.cloudflare.config.CloudflareConfig;
 import com.roomelephant.elephlink.domain.DnsService;
 import com.roomelephant.elephlink.domain.model.DnsRecord;
+import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CloudFlareService implements DnsService {
-  private static final CfRequest client = new CfRequest();
-
   private static final String TOKEN_VALIDATION_URL = "/user/tokens/verify";
   private static final String LIST_RECORDS = "/zones/%s/dns_records?type=%s&name=%s";
   private static final String UPDATE_RECORDS = "/zones/%s/dns_records/%s";
@@ -21,9 +21,11 @@ public class CloudFlareService implements DnsService {
   private static final String X_AUTH_EMAIL = "X-Auth-Email";
 
   private final CloudflareConfig cloudflareConfig;
+  private final CfRequest client;
 
-  public CloudFlareService(CloudflareConfig cloudflareConfig) {
+  public CloudFlareService(CloudflareConfig cloudflareConfig, Duration timeout) {
     this.cloudflareConfig = cloudflareConfig;
+    this.client = new CfRequest(timeout);
   }
 
   @Override

@@ -1,4 +1,4 @@
 records:
-  - roomelephant.com
-cron-expression: "* * * * *" # UNIX Cron Expression
-timeout-in-milliseconds: 1000
+  - domain.com
+cron-expression: "0 4 * * *" # UNIX Cron Expression
+timeout-in-milliseconds: 3000

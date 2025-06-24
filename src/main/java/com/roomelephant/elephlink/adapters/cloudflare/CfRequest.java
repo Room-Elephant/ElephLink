@@ -7,6 +7,7 @@ import com.roomelephant.elephlink.domain.model.RequestFailedException;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,6 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 class CfRequest {
   private static final String BASE_URL = "https://api.cloudflare.com/client/v4";
   private static final ObjectMapper objectMapper = new ObjectMapper();
+
+  private final Duration timeout;
+
+  CfRequest(Duration timeout) {
+    this.timeout = timeout;
+  }
 
   <T> T get(String url, Map<String, String> headers, Class<T> clazz) {
     HttpRequest.Builder builder = HttpRequest.newBuilder()
@@ -40,6 +47,7 @@ class CfRequest {
     HttpRequest request = builder
         .uri(URI.create(BASE_URL + url))
         .header("Accept", "application/json")
+        .timeout(timeout)
         .build();
 
     HttpResponse<String> response;

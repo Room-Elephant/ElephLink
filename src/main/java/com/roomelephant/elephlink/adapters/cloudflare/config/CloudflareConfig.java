@@ -1,4 +1,4 @@
-package com.roomelephant.elephlink.adapters.cloudflare;
+package com.roomelephant.elephlink.adapters.cloudflare.config;
 
 import lombok.Builder;
 

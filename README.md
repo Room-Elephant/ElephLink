@@ -55,7 +55,7 @@ docker run \
   --name elephlink \
   --restart unless-stopped \
   -v /path/to/config/dir/:/config \
-  -e JAVA_OPTS=-Xmx15m -XX:+UseSerialGC \
+  -e JAVA_OPTS=-Xmx15m \
   roomelephant/elephlink:latest
 ```
 
@@ -97,7 +97,9 @@ records:
   - another.yourdomain.com
 # UNIX Cron Expression for the update schedule.
 # This example runs every day at 04:00 AM
-cron-expression: "0 4 * * *" 
+cron-expression: "0 4 * * *"
+# Timeout for requesting external ip
+timeout-in-milliseconds: 3000 # default 1000 milliseconds
 ```
 
 A quick guide to cron expressions:

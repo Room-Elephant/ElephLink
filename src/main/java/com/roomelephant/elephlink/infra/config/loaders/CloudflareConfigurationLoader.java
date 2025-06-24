@@ -5,7 +5,7 @@ import static com.roomelephant.elephlink.infra.config.loaders.CloudflareConfigur
 import static com.roomelephant.elephlink.infra.config.loaders.CloudflareConfigurationLoader.CloudflareProperties.KEY;
 import static com.roomelephant.elephlink.infra.config.loaders.CloudflareConfigurationLoader.CloudflareProperties.ZONE_IDENTIFIER;
 
-import com.roomelephant.elephlink.adapters.cloudflare.CloudflareConfig;
+import com.roomelephant.elephlink.adapters.cloudflare.config.CloudflareConfig;
 import java.util.Map;
 
 public class CloudflareConfigurationLoader extends BaseConfigurationLoader<CloudflareConfig> {
