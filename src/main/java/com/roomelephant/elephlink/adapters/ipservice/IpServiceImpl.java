@@ -60,7 +60,8 @@ public class IpServiceImpl implements IpService {
     try {
       return SharedHttpClient.getClient().send(request, HttpResponse.BodyHandlers.ofString());
     } catch (HttpTimeoutException e) {
-      log.warn("Request timed out from {}.", request.uri(), e);
+      log.debug("Request to '{}' took more than the defined timeout of '{}' milliseconds.", request.uri(),
+          request.timeout().get().toMillis(), e);
       return null;
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();

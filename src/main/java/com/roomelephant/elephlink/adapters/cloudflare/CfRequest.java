@@ -7,6 +7,7 @@ import com.roomelephant.elephlink.domain.model.RequestFailedException;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpTimeoutException;
 import java.time.Duration;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -53,12 +54,16 @@ class CfRequest {
     HttpResponse<String> response;
     try {
       response = SharedHttpClient.getClient().send(request, HttpResponse.BodyHandlers.ofString());
+    } catch (HttpTimeoutException e) {
+      log.debug("Request to '{}' took more than the defined timeout of '{}' milliseconds.", url, timeout, e);
+      throw new RequestFailedException(
+          "Request to '" + url + "' took more than the defined timeout of '" + timeout.toMillis() + "' milliseconds." + url, e);
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
-      log.debug("Failed to make request to {}", url, e);
+      log.debug("Failed to make request to '{}'. timeout is '{}' milliseconds.", url, timeout, e);
       throw new RequestFailedException("Interrupted while making request to " + url, e);
     } catch (Exception e) {
-      log.debug("Failed to make request to {}", url, e);
+      log.debug("Failed to make request to {}. timeout is '{}' milliseconds.", url, timeout, e);
       throw new RequestFailedException("Failed to make request to " + url, e);
     }
 
