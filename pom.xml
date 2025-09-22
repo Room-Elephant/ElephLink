@@ -11,7 +11,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <compiler.plugin.version>3.14.0</compiler.plugin.version>
+        <compiler.plugin.version>3.14.1</compiler.plugin.version>
         <checkstyle.plugin.version>3.6.0</checkstyle.plugin.version>
         <puppycrawl.version>10.25.1</puppycrawl.version>
         <assembly.plugin.version>3.7.1</assembly.plugin.version>
