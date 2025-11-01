@@ -11,7 +11,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <compiler.plugin.version>3.14.0</compiler.plugin.version>
+        <compiler.plugin.version>3.14.1</compiler.plugin.version>
         <checkstyle.plugin.version>3.6.0</checkstyle.plugin.version>
         <puppycrawl.version>10.25.1</puppycrawl.version>
         <assembly.plugin.version>3.7.1</assembly.plugin.version>
@@ -20,8 +20,8 @@
         <slfj.version>2.0.17</slfj.version>
         <logback.version>1.5.18</logback.version>
         <lombok.version>1.18.42</lombok.version>
-        <snakeyaml.version>2.9</snakeyaml.version>
-        <jackson.version>2.19.1</jackson.version>
+        <snakeyaml.version>2.10</snakeyaml.version>
+        <jackson.version>2.20.0</jackson.version>
         <cronutils.version>9.2.1</cronutils.version>
     </properties>
 
